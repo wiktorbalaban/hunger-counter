@@ -26,6 +26,7 @@ app-rn/
       AddHungerScreen.tsx   Tab 1 — Track + Log manually
       TodayScreen.tsx       Tab 2 — Today's entries
       ReportScreen.tsx      Tab 3 — Horizontal stacked bar chart (last 10 days)
+      MoreScreen.tsx        Tab 4 — Privacy policy link (opens GitHub Pages)
     navigation/
       TabNavigator.tsx      bottom tab bar
     native/
@@ -140,6 +141,19 @@ app-rn/
     full_icon.png             default icon (no hunger today)
     yin_yang_icon.png         alternate icon (hunger logged today)
 ```
+
+## GitHub Pages (`docs/`)
+
+Served from the `docs/` directory on the `main` branch.
+
+```
+docs/
+  index.html          app landing page
+  icon.png            app icon (copied from pics/apple-full-icon.png)
+  privacy-policy.html privacy policy
+```
+
+The Google Play button in `index.html` is currently commented out — uncomment and set the correct URL once the app is published.
 
 ## Dev commands
 
