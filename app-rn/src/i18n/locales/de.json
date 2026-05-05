@@ -1,0 +1,49 @@
+{
+  "tabs": {
+    "add": "Hunger-Tracker",
+    "today": "Heute",
+    "report": "Bericht",
+    "more": "Mehr"
+  },
+  "more": {
+    "privacyPolicy": "Datenschutzerklärung"
+  },
+  "add": {
+    "modeTrack": "Aufzeichnen",
+    "modeLog": "Manuell eintragen",
+    "startTime": "Startzeit",
+    "startTimeOptional": "Startzeit (optional)",
+    "intensityOptional": "Intensität (optional)",
+    "intensity": "Intensität",
+    "endTime": "Endzeit",
+    "duration": "Dauer *",
+    "setDuration": "Dauer festlegen",
+    "inProgress": "Hunger läuft",
+    "startHunger": "Hunger starten",
+    "focusIssues": "Konzentrationsprobleme",
+    "cancelSession": "Sitzung abbrechen",
+    "invalidDuration": "Gültige Dauer eingeben"
+  },
+  "today": {
+    "empty": "Heute keine Einträge.\nTippe auf Hinzufügen.",
+    "focusIssues": "Konzentrationsprobleme"
+  },
+  "report": {
+    "title": "Hunger pro Tag",
+    "subtitle": "Letzte {{count}} Tage",
+    "focusIssues": "Konzentrationsprobleme"
+  },
+  "intensity": {
+    "low": "Niedrig",
+    "medium": "Mittel",
+    "high": "Hoch"
+  },
+  "common": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "set": "Festlegen",
+    "concentrationProblems": "Konzentrationsprobleme",
+    "selectDateTime": "Datum & Uhrzeit wählen",
+    "now": "Jetzt"
+  }
+}

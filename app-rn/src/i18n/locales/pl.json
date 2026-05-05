@@ -1,0 +1,49 @@
+{
+  "tabs": {
+    "add": "Licznik głodu",
+    "today": "Dziś",
+    "report": "Raport",
+    "more": "Więcej"
+  },
+  "more": {
+    "privacyPolicy": "Polityka prywatności"
+  },
+  "add": {
+    "modeTrack": "Śledź",
+    "modeLog": "Wprowadź ręcznie",
+    "startTime": "Czas rozpoczęcia",
+    "startTimeOptional": "Czas rozpoczęcia (opcjonalnie)",
+    "intensityOptional": "Intensywność (opcjonalnie)",
+    "intensity": "Intensywność",
+    "endTime": "Czas zakończenia",
+    "duration": "Czas trwania *",
+    "setDuration": "Ustaw czas trwania",
+    "inProgress": "Głód w toku",
+    "startHunger": "Rozpocznij głód",
+    "focusIssues": "Problemy z koncentracją",
+    "cancelSession": "Anuluj sesję",
+    "invalidDuration": "Podaj prawidłowy czas trwania"
+  },
+  "today": {
+    "empty": "Brak wpisów na dziś.\nNaciśnij Dodaj, aby dodać wpis.",
+    "focusIssues": "Problemy z koncentracją"
+  },
+  "report": {
+    "title": "Głód na dzień",
+    "subtitle": "Ostatnie {{count}} dni",
+    "focusIssues": "Problemy z koncentracją"
+  },
+  "intensity": {
+    "low": "Niski",
+    "medium": "Średni",
+    "high": "Wysoki"
+  },
+  "common": {
+    "save": "Zapisz",
+    "cancel": "Anuluj",
+    "set": "Ustaw",
+    "concentrationProblems": "Problemy z koncentracją",
+    "selectDateTime": "Wybierz datę i godzinę",
+    "now": "Teraz"
+  }
+}

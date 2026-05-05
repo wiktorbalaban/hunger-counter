@@ -1,0 +1,49 @@
+{
+  "tabs": {
+    "add": "Hunger Counter",
+    "today": "Today",
+    "report": "Report",
+    "more": "More"
+  },
+  "more": {
+    "privacyPolicy": "Privacy Policy"
+  },
+  "add": {
+    "modeTrack": "Track",
+    "modeLog": "Log manually",
+    "startTime": "Start time",
+    "startTimeOptional": "Start time (optional)",
+    "intensityOptional": "Intensity (optional)",
+    "intensity": "Intensity",
+    "endTime": "End time",
+    "duration": "Duration *",
+    "setDuration": "Set duration",
+    "inProgress": "Hunger in progress",
+    "startHunger": "Start hunger",
+    "focusIssues": "Focus issues",
+    "cancelSession": "Cancel session",
+    "invalidDuration": "Enter a valid duration"
+  },
+  "today": {
+    "empty": "No hunger entries today.\nTap Add to record one.",
+    "focusIssues": "Focus issues"
+  },
+  "report": {
+    "title": "Hunger per day",
+    "subtitle": "Last {{count}} days",
+    "focusIssues": "Focus issues"
+  },
+  "intensity": {
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "set": "Set",
+    "concentrationProblems": "Concentration problems",
+    "selectDateTime": "Select date & time",
+    "now": "Now"
+  }
+}

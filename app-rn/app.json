@@ -1,0 +1,49 @@
+{
+  "expo": {
+    "name": "Hunger Counter",
+    "slug": "hunger-counter",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/full_icon.png",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.victoosesoftware.hungercounter"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "package": "com.victoosesoftware.hungercounter",
+      "versionCode": 1,
+      "versionName": "1.0.0"
+    },
+    "web": {
+      "favicon": "./assets/full_icon.png"
+    },
+    "plugins": [
+      "@react-native-community/datetimepicker",
+      "expo-localization",
+      "expo-background-fetch",
+      [
+        "./app.plugin",
+        {
+          "icons": {
+            "Full": "./assets/full_icon.png",
+            "YinYang": "./assets/yin_yang_icon.png"
+          },
+          "defaultIcon": "Full"
+        }
+      ]
+    ]
+  }
+}

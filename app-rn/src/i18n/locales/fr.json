@@ -1,0 +1,49 @@
+{
+  "tabs": {
+    "add": "Compteur de faim",
+    "today": "Aujourd'hui",
+    "report": "Rapport",
+    "more": "Plus"
+  },
+  "more": {
+    "privacyPolicy": "Politique de confidentialité"
+  },
+  "add": {
+    "modeTrack": "Suivre",
+    "modeLog": "Saisir manuellement",
+    "startTime": "Heure de début",
+    "startTimeOptional": "Heure de début (optionnel)",
+    "intensityOptional": "Intensité (optionnel)",
+    "intensity": "Intensité",
+    "endTime": "Heure de fin",
+    "duration": "Durée *",
+    "setDuration": "Définir la durée",
+    "inProgress": "Faim en cours",
+    "startHunger": "Démarrer",
+    "focusIssues": "Problèmes de concentration",
+    "cancelSession": "Annuler la session",
+    "invalidDuration": "Entrez une durée valide"
+  },
+  "today": {
+    "empty": "Aucune entrée aujourd'hui.\nAppuyez sur Ajouter.",
+    "focusIssues": "Problèmes de concentration"
+  },
+  "report": {
+    "title": "Faim par jour",
+    "subtitle": "{{count}} derniers jours",
+    "focusIssues": "Problèmes de concentration"
+  },
+  "intensity": {
+    "low": "Faible",
+    "medium": "Modérée",
+    "high": "Élevée"
+  },
+  "common": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "set": "Définir",
+    "concentrationProblems": "Problèmes de concentration",
+    "selectDateTime": "Choisir date et heure",
+    "now": "Maintenant"
+  }
+}
