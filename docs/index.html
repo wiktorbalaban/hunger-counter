@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hunger Counter</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      color: #1a1a1a;
+      background: #f9f9f9;
+      padding: 2rem 1rem 4rem;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .icon {
+      width: 100px;
+      height: 100px;
+      border-radius: 22px;
+      margin: 0 auto 1.5rem;
+      display: block;
+    }
+
+    h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+
+    .tagline {
+      color: #555;
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    .features {
+      text-align: left;
+      margin: 0 auto 2rem;
+      max-width: 420px;
+    }
+
+    .features li {
+      list-style: none;
+      padding: 0.35rem 0;
+      padding-left: 1.6rem;
+      position: relative;
+      color: #333;
+    }
+
+    .features li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #508c76;
+      font-weight: 700;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #508c76;
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 0.6rem 1.4rem;
+      border-radius: 8px;
+      text-decoration: none;
+      margin-bottom: 2.5rem;
+    }
+
+    .badge:hover { background: #3d7060; }
+
+    .footer-links {
+      font-size: 0.875rem;
+      color: #888;
+    }
+
+    .footer-links a { color: #508c76; text-decoration: none; }
+    .footer-links a:hover { text-decoration: underline; }
+
+    @media (prefers-color-scheme: dark) {
+      body { background: #111; color: #e8e8e8; }
+      .container { background: #1c1c1e; box-shadow: none; }
+      .tagline { color: #aaa; }
+      .features li { color: #ccc; }
+      .badge { background: #508c76; color: #fff; }
+      .badge:hover { background: #6aad96; }
+      .footer-links { color: #666; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="icon.png" alt="Hunger Counter icon" class="icon" />
+    <h1>Hunger Counter</h1>
+    <p class="tagline">Track your hunger episodes, intensities, and patterns.</p>
+
+    <ul class="features">
+      <li>Log hunger episodes with start time and duration</li>
+      <li>Track intensity — low, medium, or high</li>
+      <li>Note concentration problems alongside each episode</li>
+      <li>View today's entries at a glance</li>
+      <li>Weekly report with a visual breakdown by day</li>
+      <li>All data stored locally — no account, no cloud</li>
+    </ul>
+
+    <!-- <a class="badge" href="https://play.google.com/store/apps/details?id=com.wiktorbalaban.hungercounter">Get it on Google Play</a> -->
+
+    <div class="footer-links">
+      <a href="privacy-policy.html">Privacy Policy</a>
+      &nbsp;·&nbsp;
+      <a href="mailto:victoose.development@gmail.com">Contact</a>
+    </div>
+  </div>
+</body>
+</html>

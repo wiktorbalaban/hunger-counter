@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../context/ThemeContext';
 
-const PRIVACY_POLICY_URL = 'https://YOUR_USERNAME.github.io/hunger-counter/docs/privacy-policy.html';
+const PRIVACY_POLICY_URL = 'https://wiktorbalaban.github.io/hunger-counter/docs/privacy-policy.html';
 
 export default function MoreScreen() {
   const { theme } = useTheme();
