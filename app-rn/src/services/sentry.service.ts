@@ -22,6 +22,21 @@ export function initSentry(): void {
   Sentry.init({
     dsn: DSN,
     enabled: getConsent() === true,
+
+    // No analytics or usage data
     sendDefaultPii: false,
+    enableAutoSessionTracking: false,
+    enableUserInteractionTracing: false,
+    attachScreenshot: false,
+
+    // No performance monitoring
+    tracesSampleRate: undefined,
+    profilesSampleRate: undefined,
+
+    // Drop breadcrumbs from network requests and console — keep only navigation/error context
+    beforeBreadcrumb(breadcrumb) {
+      if (breadcrumb.type === 'http' || breadcrumb.category === 'console') return null;
+      return breadcrumb;
+    },
   });
 }
