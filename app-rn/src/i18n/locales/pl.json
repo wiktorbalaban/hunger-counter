@@ -6,7 +6,14 @@
     "more": "Więcej"
   },
   "more": {
-    "privacyPolicy": "Polityka prywatności"
+    "privacyPolicy": "Polityka prywatności",
+    "crashReporting": "Wysyłaj raporty o błędach"
+  },
+  "crashReporting": {
+    "title": "Pomóż ulepszyć aplikację",
+    "message": "Jeśli aplikacja się zawiesi, anonimowy raport z błędem i informacjami o urządzeniu może zostać wysłany do dewelopera. Nie zawiera żadnych danych osobowych. Możesz to zmienić w dowolnym momencie w zakładce Więcej.",
+    "allow": "Zezwól",
+    "decline": "Nie, dziękuję"
   },
   "add": {
     "modeTrack": "Śledź",

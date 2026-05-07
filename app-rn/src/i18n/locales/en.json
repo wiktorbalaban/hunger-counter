@@ -6,7 +6,14 @@
     "more": "More"
   },
   "more": {
-    "privacyPolicy": "Privacy Policy"
+    "privacyPolicy": "Privacy Policy",
+    "crashReporting": "Send crash reports"
+  },
+  "crashReporting": {
+    "title": "Help improve the app",
+    "message": "If the app crashes, an anonymous report with the error and device info can be sent to the developer. No personal data is included. You can change this at any time in the More tab.",
+    "allow": "Allow",
+    "decline": "No thanks"
   },
   "add": {
     "modeTrack": "Track",

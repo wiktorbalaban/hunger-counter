@@ -6,7 +6,14 @@
     "more": "Plus"
   },
   "more": {
-    "privacyPolicy": "Politique de confidentialité"
+    "privacyPolicy": "Politique de confidentialité",
+    "crashReporting": "Envoyer les rapports de plantage"
+  },
+  "crashReporting": {
+    "title": "Aider à améliorer l'app",
+    "message": "En cas de plantage, un rapport anonyme contenant l'erreur et les informations sur l'appareil peut être envoyé au développeur. Aucune donnée personnelle n'est incluse. Vous pouvez modifier ce réglage à tout moment dans l'onglet Plus.",
+    "allow": "Autoriser",
+    "decline": "Non merci"
   },
   "add": {
     "modeTrack": "Suivre",

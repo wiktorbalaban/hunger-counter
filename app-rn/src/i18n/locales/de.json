@@ -6,7 +6,14 @@
     "more": "Mehr"
   },
   "more": {
-    "privacyPolicy": "Datenschutzerklärung"
+    "privacyPolicy": "Datenschutzerklärung",
+    "crashReporting": "Absturzberichte senden"
+  },
+  "crashReporting": {
+    "title": "App verbessern helfen",
+    "message": "Wenn die App abstürzt, kann ein anonymer Bericht mit dem Fehler und Geräteinformationen an den Entwickler gesendet werden. Es werden keine persönlichen Daten übertragen. Dies kann jederzeit im Tab 'Mehr' geändert werden.",
+    "allow": "Erlauben",
+    "decline": "Nein danke"
   },
   "add": {
     "modeTrack": "Aufzeichnen",

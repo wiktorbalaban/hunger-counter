@@ -18,12 +18,14 @@ export interface Theme {
   chartGrid:     string;
   chartBarWidth: number;
 
-  textMuted:    string;
-  textLabel:    string;
-  textInactive: string;
-  onPrimary:    string;
-  onHunger:    string;
-  white:        string;
+  textPrimary:    string;
+  textMuted:      string;
+  textLabel:      string;
+  textInactive:   string;
+  onPrimary:      string;
+  onHunger:       string;
+  white:          string;
+  secondarySurface: string;
 }
 
 export const lightTheme: Theme = {
@@ -46,12 +48,14 @@ export const lightTheme: Theme = {
   chartGrid:     '#f3f4f6',
   chartBarWidth: 32,
 
-  textMuted:    '#9ca3af',
-  textLabel:    '#6b7280',
-  textInactive: '#666666',
-  onPrimary:    '#ffffff',
-  onHunger:    '#ffffff',
-  white:        '#ffffff',
+  textPrimary:    '#111827',
+  textMuted:      '#9ca3af',
+  textLabel:      '#6b7280',
+  textInactive:   '#666666',
+  onPrimary:      '#ffffff',
+  onHunger:       '#ffffff',
+  white:          '#ffffff',
+  secondarySurface: '#f3f4f6',
 };
 
 export const darkTheme: Theme = {
@@ -74,10 +78,12 @@ export const darkTheme: Theme = {
   chartGrid:     '#1f2937',
   chartBarWidth: 12,
 
-  textMuted:    '#6b7280',
-  textLabel:    '#9ca3af',
-  textInactive: '#9ca3af',
-  onPrimary:    '#111827',
-  onHunger:    '#111827',
-  white:        '#ffffff',
+  textPrimary:    '#f3f4f6',
+  textMuted:      '#6b7280',
+  textLabel:      '#9ca3af',
+  textInactive:   '#9ca3af',
+  onPrimary:      '#111827',
+  onHunger:       '#111827',
+  white:          '#ffffff',
+  secondarySurface: '#374151',
 };
