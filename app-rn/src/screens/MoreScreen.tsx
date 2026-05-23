@@ -56,14 +56,14 @@ export default function MoreScreen() {
         >
           <Ionicons name="language-outline" size={22} color={theme.primary} />
           <Text className="flex-1 text-base text-gray-900 dark:text-gray-100">{t('more.language')}</Text>
-          <Text className="text-sm text-gray-400 dark:text-gray-500 mr-1">
+          <Text className="text-sm text-gray-400 dark:text-gray-500 me-1">
             {currentLangLabel(selectedLang, t('more.languageDefault'))}
           </Text>
           <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
         </TouchableOpacity>
         <View className="flex-row items-center border-b border-gray-100 dark:border-gray-700" style={{ padding: 16, gap: 12 }}>
           <Ionicons name="bug-outline" size={22} color={theme.primary} />
-          <Text className="flex-1 text-base text-gray-900 dark:text-gray-100">
+          <Text numberOfLines={1} className="flex-1 text-base text-gray-900 dark:text-gray-100">
             {t('more.crashReporting')}
           </Text>
           <Switch
@@ -80,7 +80,7 @@ export default function MoreScreen() {
           activeOpacity={0.6}
         >
           <Ionicons name="shield-checkmark-outline" size={22} color={theme.primary} />
-          <Text className="flex-1 text-base text-gray-900 dark:text-gray-100">
+          <Text numberOfLines={1} className="flex-1 text-base text-gray-900 dark:text-gray-100">
             {t('more.privacyPolicy')}
           </Text>
           <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
