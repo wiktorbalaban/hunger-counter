@@ -141,9 +141,9 @@ export default function AddHungerScreen({ navigation }: any) {
 
       {mode === 'track' && !!draft && (
         <View className="mx-4 gap-4">
-          <View className="bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-700 rounded-xl p-4 flex-row items-center justify-between">
-            <Text className="font-bold text-amber-800 dark:text-amber-300 text-base">{t('add.inProgress')}</Text>
-            <Text className="text-amber-700 dark:text-amber-400 font-semibold text-2xl">
+          <View className="bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/60 rounded-xl p-4 flex-row items-center justify-between">
+            <Text className="font-bold text-amber-900 dark:text-amber-200 text-base">{t('add.inProgress')}</Text>
+            <Text className="text-amber-800 dark:text-amber-300 font-semibold text-2xl">
               {draft.startTime ? formatElapsed(now.getTime() - new Date(draft.startTime).getTime()) : '—'}
             </Text>
           </View>
