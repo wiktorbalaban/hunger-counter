@@ -1,4 +1,5 @@
 {
+  "_name": "Polski",
   "tabs": {
     "add": "Licznik głodu",
     "today": "Dziś",
@@ -7,7 +8,9 @@
   },
   "more": {
     "privacyPolicy": "Polityka prywatności",
-    "crashReporting": "Wysyłaj raporty o błędach"
+    "crashReporting": "Wysyłaj raporty o błędach",
+    "language": "Język",
+    "languageDefault": "Język urządzenia"
   },
   "crashReporting": {
     "title": "Pomóż ulepszyć aplikację",

@@ -1,4 +1,5 @@
 {
+  "_name": "Deutsch",
   "tabs": {
     "add": "Hunger-Tracker",
     "today": "Heute",
@@ -7,7 +8,9 @@
   },
   "more": {
     "privacyPolicy": "Datenschutzerklärung",
-    "crashReporting": "Absturzberichte senden"
+    "crashReporting": "Absturzberichte senden",
+    "language": "Sprache",
+    "languageDefault": "Gerätesprache"
   },
   "crashReporting": {
     "title": "App verbessern helfen",
