@@ -109,11 +109,31 @@ function withDynamicIconModule(config) {
   ]);
 }
 
+// ── Tablet support ────────────────────────────────────────────────────────────
+
+function withNoTabletSupport(config) {
+  return withAndroidManifest(config, (config) => {
+    const manifest = config.modResults.manifest;
+    manifest['supports-screens'] = [
+      {
+        $: {
+          'android:smallScreens': 'true',
+          'android:normalScreens': 'true',
+          'android:largeScreens': 'false',
+          'android:xlargeScreens': 'false',
+        },
+      },
+    ];
+    return config;
+  });
+}
+
 // ── Root export ───────────────────────────────────────────────────────────────
 
 function withAll(config, options) {
   config = withAlternateIcons(config, options);
   config = withDynamicIconModule(config);
+  config = withNoTabletSupport(config);
   return config;
 }
 

@@ -9,6 +9,7 @@ import * as NavigationBar from 'expo-navigation-bar';
 import { HungerProvider } from './src/context/HungerContext';
 import { ThemeProvider } from './src/context/ThemeContext';
 import { useAppIconSync } from './src/hooks/useAppIconSync';
+import { useTheme } from './src/context/ThemeContext';
 import { registerIconSyncTask } from './src/tasks/iconSyncTask';
 import TabNavigator from './src/navigation/TabNavigator';
 import CrashReportingConsentModal from './src/components/CrashReportingConsentModal';
@@ -19,6 +20,12 @@ initSentry();
 function AppContent() {
   useAppIconSync();
   const [showConsent, setShowConsent] = useState(() => getConsent() === undefined);
+  const { theme, isDark } = useTheme();
+
+  useEffect(() => {
+    NavigationBar.setBackgroundColorAsync(theme.background);
+    NavigationBar.setButtonStyleAsync(isDark ? 'light' : 'dark');
+  }, [isDark, theme.background]);
 
   return (
     <NavigationContainer>
@@ -31,8 +38,9 @@ function AppContent() {
 
 export default function App() {
   useEffect(() => {
-    NavigationBar.setVisibilityAsync('hidden');
-    NavigationBar.setBehaviorAsync('overlay-swipe');
+    // will be useful if ads introduced in bottom bar
+    // NavigationBar.setVisibilityAsync('hidden');
+    // NavigationBar.setBehaviorAsync('overlay-swipe');
     registerIconSyncTask();
   }, []);
 
