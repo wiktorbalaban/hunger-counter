@@ -2,7 +2,7 @@
   "expo": {
     "name": "Hunger Counter",
     "slug": "hunger-counter",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/full_icon.png",
     "userInterfaceStyle": "automatic",
@@ -23,8 +23,8 @@
       },
       "predictiveBackGestureEnabled": false,
       "package": "com.victoosesoftware.hungercounter",
-      "versionCode": 1,
-      "versionName": "1.0.0"
+      "versionCode": 2,
+      "versionName": "1.0.1"
     },
     "web": {
       "favicon": "./assets/full_icon.png"
