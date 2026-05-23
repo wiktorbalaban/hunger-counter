@@ -7,31 +7,31 @@
     "more": "Mehr"
   },
   "more": {
-    "privacyPolicy": "Datenschutzerklärung",
+    "privacyPolicy": "Datenschutz",
     "crashReporting": "Absturzberichte senden",
     "language": "Sprache",
     "languageDefault": "Gerätesprache"
   },
   "crashReporting": {
-    "title": "App verbessern helfen",
+    "title": "Hilf, die App zu verbessern",
     "message": "Wenn die App abstürzt, kann ein anonymer Bericht mit dem Fehler und Geräteinformationen an den Entwickler gesendet werden. Es werden keine persönlichen Daten übertragen. Dies kann jederzeit im Tab 'Mehr' geändert werden.",
     "allow": "Erlauben",
     "decline": "Nein danke"
   },
   "add": {
-    "modeTrack": "Aufzeichnen",
-    "modeLog": "Manuell eintragen",
+    "modeTrack": "Jetzt verfolgen",
+    "modeLog": "Nachträglich eintragen",
     "startTime": "Startzeit",
     "startTimeOptional": "Startzeit (optional)",
     "intensityOptional": "Intensität (optional)",
     "intensity": "Intensität",
     "endTime": "Endzeit",
     "duration": "Dauer *",
-    "setDuration": "Dauer festlegen",
+    "setDuration": "Dauer einstellen",
     "inProgress": "Hunger läuft",
-    "startHunger": "Hunger starten",
+    "startHunger": "Starten",
     "focusIssues": "Konzentrationsprobleme",
-    "cancelSession": "Sitzung abbrechen",
+    "cancelSession": "Abbrechen",
     "invalidDuration": "Gültige Dauer eingeben"
   },
   "today": {

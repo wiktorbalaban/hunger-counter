@@ -19,23 +19,23 @@
     "decline": "Nie, dziękuję"
   },
   "add": {
-    "modeTrack": "Śledź",
-    "modeLog": "Wprowadź ręcznie",
-    "startTime": "Czas rozpoczęcia",
-    "startTimeOptional": "Czas rozpoczęcia (opcjonalnie)",
+    "modeTrack": "Śledź teraz",
+    "modeLog": "Dodaj wcześniejszy",
+    "startTime": "Początek",
+    "startTimeOptional": "Początek (opcjonalnie)",
     "intensityOptional": "Intensywność (opcjonalnie)",
     "intensity": "Intensywność",
-    "endTime": "Czas zakończenia",
+    "endTime": "Koniec",
     "duration": "Czas trwania *",
-    "setDuration": "Ustaw czas trwania",
-    "inProgress": "Głód w toku",
-    "startHunger": "Rozpocznij głód",
+    "setDuration": "Ustaw czas",
+    "inProgress": "Aktywny głód",
+    "startHunger": "Rozpocznij",
     "focusIssues": "Problemy z koncentracją",
-    "cancelSession": "Anuluj sesję",
-    "invalidDuration": "Podaj prawidłowy czas trwania"
+    "cancelSession": "Anuluj",
+    "invalidDuration": "Podaj prawidłowy czas"
   },
   "today": {
-    "empty": "Brak wpisów na dziś.\nNaciśnij Dodaj, aby dodać wpis.",
+    "empty": "Brak wpisów na dziś.\nNaciśnij Dodaj, by dodać wpis.",
     "focusIssues": "Problemy z koncentracją"
   },
   "report": {

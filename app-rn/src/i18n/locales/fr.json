@@ -19,19 +19,19 @@
     "decline": "Non merci"
   },
   "add": {
-    "modeTrack": "Suivre",
-    "modeLog": "Saisir manuellement",
-    "startTime": "Heure de début",
-    "startTimeOptional": "Heure de début (optionnel)",
+    "modeTrack": "Suivre maintenant",
+    "modeLog": "Ajouter terminé",
+    "startTime": "Début",
+    "startTimeOptional": "Début (optionnel)",
     "intensityOptional": "Intensité (optionnel)",
     "intensity": "Intensité",
-    "endTime": "Heure de fin",
+    "endTime": "Fin",
     "duration": "Durée *",
-    "setDuration": "Définir la durée",
+    "setDuration": "Choisir la durée",
     "inProgress": "Faim en cours",
     "startHunger": "Démarrer",
     "focusIssues": "Problèmes de concentration",
-    "cancelSession": "Annuler la session",
+    "cancelSession": "Annuler",
     "invalidDuration": "Entrez une durée valide"
   },
   "today": {

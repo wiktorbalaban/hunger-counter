@@ -19,8 +19,8 @@
     "decline": "No thanks"
   },
   "add": {
-    "modeTrack": "Track",
-    "modeLog": "Log manually",
+    "modeTrack": "Track now",
+    "modeLog": "Log past",
     "startTime": "Start time",
     "startTimeOptional": "Start time (optional)",
     "intensityOptional": "Intensity (optional)",
@@ -31,7 +31,7 @@
     "inProgress": "Hunger in progress",
     "startHunger": "Start hunger",
     "focusIssues": "Focus issues",
-    "cancelSession": "Cancel session",
+    "cancelSession": "Cancel",
     "invalidDuration": "Enter a valid duration"
   },
   "today": {
