@@ -109,8 +109,7 @@ function withDynamicIconModule(config) {
   ]);
 }
 
-// ── Tablet support ────────────────────────────────────────────────────────────
-
+// ── Cancel tablet support ────────────────────────────────────────────────────
 function withNoTabletSupport(config) {
   return withAndroidManifest(config, (config) => {
     const manifest = config.modResults.manifest;

@@ -3,6 +3,7 @@ const { withNativeWind } = require('nativewind/metro');
 
 const config = getDefaultConfig(__dirname);
 
+// Needed to load dynamically translation json files
 config.transformer.unstable_allowRequireContext = true;
 
 module.exports = withNativeWind(config, { input: './global.css' });
