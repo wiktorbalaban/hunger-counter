@@ -16,7 +16,7 @@
     "@sentry/react-native": "~7.2.0",
     "babel-preset-expo": "^55.0.17",
     "expo": "~54.0.33",
-    "expo-background-fetch": "~14.0.9",
+    "expo-background-task": "~1.0.10",
     "expo-localization": "~17.0.8",
     "expo-navigation-bar": "~5.0.10",
     "expo-status-bar": "~3.0.9",

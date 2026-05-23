@@ -32,7 +32,6 @@
     "plugins": [
       "@react-native-community/datetimepicker",
       "expo-localization",
-      "expo-background-fetch",
       [
         "./app.plugin",
         {
@@ -43,10 +42,14 @@
           "defaultIcon": "Full"
         }
       ],
-      ["@sentry/react-native", {
-        "organization": "wiktor-baaban",
-        "project": "hunger-counter"
-      }]
+      [
+        "@sentry/react-native",
+        {
+          "organization": "wiktor-baaban",
+          "project": "hunger-counter"
+        }
+      ],
+      "expo-background-task"
     ]
   }
 }

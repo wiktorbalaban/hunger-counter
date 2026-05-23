@@ -20,12 +20,11 @@ initSentry();
 function AppContent() {
   useAppIconSync();
   const [showConsent, setShowConsent] = useState(() => getConsent() === undefined);
-  const { theme, isDark } = useTheme();
+  const { isDark } = useTheme();
 
   useEffect(() => {
-    NavigationBar.setBackgroundColorAsync(theme.background);
     NavigationBar.setButtonStyleAsync(isDark ? 'light' : 'dark');
-  }, [isDark, theme.background]);
+  }, [isDark]);
 
   return (
     <NavigationContainer>

@@ -1,4 +1,4 @@
-import * as BackgroundFetch from 'expo-background-fetch';
+import * as BackgroundTask from 'expo-background-task';
 import * as TaskManager from 'expo-task-manager';
 import { createMMKV } from 'react-native-mmkv';
 import { getEntries } from '../services/hunger.service';
@@ -19,13 +19,13 @@ TaskManager.defineTask(ICON_SYNC_TASK, async () => {
 
   // Only run after 3am — skip if it's still night
   if (now.getHours() < RESET_HOUR) {
-    return BackgroundFetch.BackgroundFetchResult.NoData;
+    return BackgroundTask.BackgroundTaskResult.Success;
   }
 
   // Only run once per calendar day (handles Doze delays gracefully)
   const today = now.toDateString();
   if (storage.getString(LAST_RESET_KEY) === today) {
-    return BackgroundFetch.BackgroundFetchResult.NoData;
+    return BackgroundTask.BackgroundTaskResult.Success;
   }
 
   const entries = getEntries();
@@ -37,29 +37,24 @@ TaskManager.defineTask(ICON_SYNC_TASK, async () => {
       await changeIcon(desired, current);
       storage.set(ICON_KEY, desired);
     } catch {
-      return BackgroundFetch.BackgroundFetchResult.Failed;
+      return BackgroundTask.BackgroundTaskResult.Failed;
     }
   }
 
   storage.set(LAST_RESET_KEY, today);
-  return BackgroundFetch.BackgroundFetchResult.NewData;
+  return BackgroundTask.BackgroundTaskResult.Success;
 });
 
 export async function registerIconSyncTask() {
-  const status = await BackgroundFetch.getStatusAsync();
-  if (
-    status === BackgroundFetch.BackgroundFetchStatus.Restricted ||
-    status === BackgroundFetch.BackgroundFetchStatus.Denied
-  ) {
+  const status = await BackgroundTask.getStatusAsync();
+  if (status === BackgroundTask.BackgroundTaskStatus.Restricted) {
     return;
   }
 
   const isRegistered = await TaskManager.isTaskRegisteredAsync(ICON_SYNC_TASK);
   if (!isRegistered) {
-    await BackgroundFetch.registerTaskAsync(ICON_SYNC_TASK, {
-      minimumInterval: 60 * 60, // 1 hour — OS decides actual interval
-      stopOnTerminate: false,   // keep running after app is closed
-      startOnBoot: true,        // resume after device restart
+    await BackgroundTask.registerTaskAsync(ICON_SYNC_TASK, {
+      minimumInterval: 60, // 60 minutes — OS decides actual interval
     });
   }
 }
