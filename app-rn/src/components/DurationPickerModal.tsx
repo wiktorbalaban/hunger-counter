@@ -53,7 +53,7 @@ export function DurationPickerModal({ visible, initialValue = 15, onSet, onCance
               itemHeight={52}
               visibleItemCount={3}
               itemTextStyle={{ fontSize: 26, fontWeight: '600', color: theme.textPrimary }}
-              overlayItemStyle={{ backgroundColor: isDark ? '#374151' : '#f3f4f6' }}
+              overlayItemStyle={{ backgroundColor: theme.secondarySurface }}
             />
           </View>
 
