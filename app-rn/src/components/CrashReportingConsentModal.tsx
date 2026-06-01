@@ -19,7 +19,7 @@ export default function CrashReportingConsentModal({ visible, onDismiss }: Props
   }
 
   return (
-    <Modal visible={visible} transparent animationType="fade">
+    <Modal visible={visible} transparent animationType="fade" onRequestClose={() => handleChoice(false)}>
       <View style={{ flex: 1, backgroundColor: theme.modalOverlay, justifyContent: 'center', padding: 24 }}>
         <View style={{ backgroundColor: theme.surface, borderRadius: 16, padding: 24, gap: 12 }}>
           <Text style={{ fontSize: 17, fontWeight: '700', color: theme.textPrimary }}>

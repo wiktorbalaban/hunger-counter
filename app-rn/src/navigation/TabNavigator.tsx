@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from 'react';
-import { View, Text, TouchableOpacity, useWindowDimensions } from 'react-native';
+import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
+import { View, Text, TouchableOpacity, useWindowDimensions, BackHandler } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
@@ -42,9 +42,28 @@ export default function TabNavigator() {
   const { width, height } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const [activeTab, setActiveTab] = useState<TabName>('Add');
+  const tabHistoryRef = useRef<TabName[]>([]);
 
   const isLandscape = width > height;
   const panesCount = width >= TABLET_WIDTH && isLandscape ? 2 : 1;
+
+  const navigateToTab = useCallback((name: TabName) => {
+    setActiveTab((current) => {
+      if (name === current) return current;
+      tabHistoryRef.current.push(current);
+      return name;
+    });
+  }, []);
+
+  useEffect(() => {
+    const sub = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (tabHistoryRef.current.length === 0) return false;
+      const prev = tabHistoryRef.current.pop()!;
+      setActiveTab(prev);
+      return true;
+    });
+    return () => sub.remove();
+  }, []);
 
   const visibleScreens = useMemo(() => {
     const activeIdx = TABS.indexOf(activeTab);
@@ -63,7 +82,7 @@ export default function TabNavigator() {
               screenName={screenName}
               defaultTitle={t(TITLE_KEYS[screenName])}
               visibleScreens={visibleScreens}
-              setActiveTab={(name) => setActiveTab(name as TabName)}
+              setActiveTab={(name) => navigateToTab(name as TabName)}
               showDivider={idx < visibleScreens.length - 1}
             >
               <Screen />
@@ -88,7 +107,7 @@ export default function TabNavigator() {
           return (
             <TouchableOpacity
               key={tab}
-              onPress={() => setActiveTab(tab)}
+              onPress={() => navigateToTab(tab)}
               style={{ flex: 1, alignItems: 'center', paddingVertical: 8 }}
               activeOpacity={0.6}
             >

@@ -39,7 +39,7 @@ export function DurationPickerModal({ visible, initialValue = 15, onSet, onCance
   const handlePlus = () => setMins(Math.min(MAX_MINS, mins + 15));
 
   return (
-    <Modal visible={visible} transparent animationType="fade">
+    <Modal visible={visible} transparent animationType="fade" onRequestClose={onCancel}>
       <View style={{ flex: 1, backgroundColor: theme.modalOverlay, justifyContent: 'center', alignItems: 'center' }}>
         <View className="bg-white dark:bg-gray-800 rounded-2xl p-6 mx-8 w-80 gap-5">
           <View
