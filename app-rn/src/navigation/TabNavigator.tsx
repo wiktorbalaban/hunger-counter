@@ -84,6 +84,7 @@ export default function TabNavigator() {
               visibleScreens={visibleScreens}
               setActiveTab={(name) => navigateToTab(name as TabName)}
               showDivider={idx < visibleScreens.length - 1}
+              isActive={idx === 0}
             >
               <Screen />
             </Pane>

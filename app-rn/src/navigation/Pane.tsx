@@ -10,6 +10,7 @@ interface Props {
   visibleScreens: string[];
   setActiveTab: (name: string) => void;
   showDivider: boolean;
+  isActive: boolean;
   children: React.ReactNode;
 }
 
@@ -19,11 +20,19 @@ export function Pane({
   visibleScreens,
   setActiveTab,
   showDivider,
+  isActive,
   children,
 }: Props) {
   const { theme, isDark } = useTheme();
   const insets = useSafeAreaInsets();
   const [title, setTitle] = useState(defaultTitle);
+
+  const headerBg = isActive
+    ? (isDark ? theme.surface : theme.primary)
+    : theme.companionHeaderBg;
+  const headerTextColor = isActive
+    ? (isDark ? theme.primary : theme.onPrimary)
+    : theme.companionHeaderText;
 
   return (
     <View
@@ -36,7 +45,7 @@ export function Pane({
       <View
         style={{
           paddingTop: insets.top,
-          backgroundColor: isDark ? theme.surface : theme.primary,
+          backgroundColor: headerBg,
         }}
       >
         <View
@@ -49,7 +58,7 @@ export function Pane({
           <Text
             numberOfLines={1}
             style={{
-              color: isDark ? theme.primary : theme.onPrimary,
+              color: headerTextColor,
               fontWeight: 'bold',
               fontSize: 18,
             }}

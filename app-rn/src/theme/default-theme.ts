@@ -26,6 +26,9 @@ export interface Theme {
   onHunger:       string;
   white:          string;
   secondarySurface: string;
+
+  companionHeaderBg:   string;
+  companionHeaderText: string;
 }
 
 export const lightTheme: Theme = {
@@ -56,6 +59,9 @@ export const lightTheme: Theme = {
   onHunger:       '#ffffff',
   white:          '#ffffff',
   secondarySurface: '#f3f4f6',
+
+  companionHeaderBg:   '#d1d5db',
+  companionHeaderText: '#374151',
 };
 
 export const darkTheme: Theme = {
@@ -86,4 +92,7 @@ export const darkTheme: Theme = {
   onHunger:       '#111827',
   white:          '#ffffff',
   secondarySurface: '#374151',
+
+  companionHeaderBg:   '#1f2937',
+  companionHeaderText: '#9ca3af',
 };
