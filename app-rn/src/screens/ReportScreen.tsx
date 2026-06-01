@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { View, Text, Dimensions, ScrollView } from 'react-native';
+import { View, Text, ScrollView, useWindowDimensions } from 'react-native';
 import { VictoryBar, VictoryChart, VictoryStack, VictoryAxis, VictoryTheme } from 'victory-native';
 import { useTranslation } from 'react-i18next';
 import { useHunger } from '../context/HungerContext';
@@ -9,8 +9,6 @@ import { HungerEntry } from '../models/hunger-entry.model';
 import { ScreenContainer, SCREEN_MAX_WIDTH } from '../components/ScreenContainer';
 
 const DAYS_SHOWN = 10;
-const SCREEN_WIDTH = Math.min(Dimensions.get('window').width, SCREEN_MAX_WIDTH);
-const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 function toHHMM(mins: number): string {
   const h = Math.floor(mins / 60);
@@ -40,6 +38,9 @@ export default function ReportScreen() {
   const { entries } = useHunger();
   const { theme } = useTheme();
   const { t } = useTranslation();
+  const { width: windowWidth, height: windowHeight } = useWindowDimensions();
+  const chartWidth = Math.min(windowWidth, SCREEN_MAX_WIDTH) - 48;
+  const chartHeight = Math.max(windowHeight - 420, 350);
 
   const { lowData, mediumData, highData, labels, hasConc, hasAnyConc } = useMemo(() => {
     const days = buildDays();
@@ -73,8 +74,8 @@ export default function ReportScreen() {
           <VictoryChart
             horizontal
             theme={VictoryTheme.material}
-            width={SCREEN_WIDTH - 48}
-            height={SCREEN_HEIGHT - 420}
+            width={chartWidth}
+            height={chartHeight}
             padding={{ left: 72, right: 24, top: 8, bottom: 36 }}
             domainPadding={{ y: 10, x: 20 }}
           >
