@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useTheme } from '../context/ThemeContext';
 import { getConsent, setConsent } from '../services/sentry.service';
 import { LanguageSetting } from '../components/LanguageSetting';
+import { ScreenContainer } from '../components/ScreenContainer';
 
 const PRIVACY_POLICY_URL = 'https://wiktorbalaban.github.io/hunger-counter/privacy-policy.html';
 
@@ -19,7 +20,9 @@ export default function MoreScreen() {
   }
 
   return (
-    <View className="flex-1 bg-gray-50 dark:bg-gray-900" style={{ padding: 16, gap: 16 }}>
+    <View className="flex-1 bg-gray-50 dark:bg-gray-900">
+      <ScreenContainer>
+        <View style={{ padding: 16, gap: 16 }}>
 
       <View className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden" style={{ elevation: 1 }}>
         <LanguageSetting />
@@ -49,6 +52,8 @@ export default function MoreScreen() {
         </TouchableOpacity>
       </View>
 
+        </View>
+      </ScreenContainer>
     </View>
   );
 }

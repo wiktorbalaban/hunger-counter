@@ -6,9 +6,10 @@ import { useHunger } from '../context/HungerContext';
 import { useTheme } from '../context/ThemeContext';
 import { AnimatedDot } from '../components/AnimatedDot';
 import { HungerEntry } from '../models/hunger-entry.model';
+import { ScreenContainer, SCREEN_MAX_WIDTH } from '../components/ScreenContainer';
 
 const DAYS_SHOWN = 10;
-const SCREEN_WIDTH = Dimensions.get('window').width;
+const SCREEN_WIDTH = Math.min(Dimensions.get('window').width, SCREEN_MAX_WIDTH);
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 function toHHMM(mins: number): string {
@@ -64,6 +65,7 @@ export default function ReportScreen() {
   return (
     <View className="flex-1 bg-gray-50 dark:bg-gray-900">
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 16 }}>
+        <ScreenContainer>
         <View className="bg-white dark:bg-gray-800 rounded-xl p-4" style={{ elevation: 2 }}>
           <Text className="font-semibold text-base mb-1 text-gray-500 dark:text-gray-400">{t('report.title')}</Text>
           <Text className="text-xs mb-2 text-gray-400 dark:text-gray-500">{t('report.subtitle', { count: DAYS_SHOWN })}</Text>
@@ -124,6 +126,7 @@ export default function ReportScreen() {
             ))}
           </View>
         </View>
+        </ScreenContainer>
       </ScrollView>
     </View>
   );

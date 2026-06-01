@@ -1,44 +1,109 @@
-import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import React, { useState, useMemo } from 'react';
+import { View, Text, TouchableOpacity, useWindowDimensions } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
-import AddHungerScreen from '../screens/AddHungerScreen';
-import TodayScreen     from '../screens/TodayScreen';
-import ReportScreen    from '../screens/ReportScreen';
-import MoreScreen      from '../screens/MoreScreen';
 import { useTheme } from '../context/ThemeContext';
+import { Pane } from './Pane';
+import AddHungerScreen from '../screens/AddHungerScreen';
+import TodayScreen from '../screens/TodayScreen';
+import ReportScreen from '../screens/ReportScreen';
+import MoreScreen from '../screens/MoreScreen';
 
-const Tab = createBottomTabNavigator();
+const TABLET_WIDTH = 768;
+
+type TabName = 'Add' | 'Today' | 'Report' | 'More';
+const TABS: TabName[] = ['Add', 'Today', 'Report', 'More'];
+
+const SCREENS: Record<TabName, React.ComponentType> = {
+  Add: AddHungerScreen,
+  Today: TodayScreen,
+  Report: ReportScreen,
+  More: MoreScreen,
+};
+
+const ICONS: Record<TabName, [keyof typeof Ionicons.glyphMap, keyof typeof Ionicons.glyphMap]> = {
+  Add: ['add-circle', 'add-circle-outline'],
+  Today: ['today', 'today-outline'],
+  Report: ['bar-chart', 'bar-chart-outline'],
+  More: ['settings', 'settings-outline'],
+};
+
+const TITLE_KEYS = {
+  Add: 'tabs.add',
+  Today: 'tabs.today',
+  Report: 'tabs.report',
+  More: 'tabs.more',
+} as const;
 
 export default function TabNavigator() {
-  const { theme, isDark } = useTheme();
+  const { theme } = useTheme();
   const { t } = useTranslation();
+  const { width, height } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
+  const [activeTab, setActiveTab] = useState<TabName>('Add');
+
+  const isLandscape = width > height;
+  const panesCount = width >= TABLET_WIDTH && isLandscape ? 2 : 1;
+
+  const visibleScreens = useMemo(() => {
+    const activeIdx = TABS.indexOf(activeTab);
+    const end = Math.min(activeIdx + panesCount, TABS.length);
+    return TABS.slice(activeIdx, end);
+  }, [activeTab, panesCount]);
 
   return (
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        headerStyle:       { backgroundColor: isDark ? theme.surface : theme.primary },
-        headerTintColor:   isDark ? theme.primary : theme.onPrimary,
-        headerTitleStyle:  { fontWeight: 'bold' },
-        tabBarActiveTintColor:   theme.primary,
-        tabBarInactiveTintColor: theme.textMuted,
-        tabBarStyle: { borderTopColor: theme.border, backgroundColor: theme.surface },
-        tabBarIcon: ({ focused, color, size }) => {
-          const icons: Record<string, [string, string]> = {
-            Add:    ['add-circle',  'add-circle-outline'],
-            Today:  ['today',       'today-outline'],
-            Report: ['bar-chart',   'bar-chart-outline'],
-            More:   ['settings',    'settings-outline'],
-          };
-          const [active, inactive] = icons[route.name] ?? ['ellipse', 'ellipse-outline'];
-          return <Ionicons name={(focused ? active : inactive) as any} size={size} color={color} />;
-        },
-      })}
-    >
-      <Tab.Screen name="Add"    component={AddHungerScreen} options={{ title: t('tabs.add') }} />
-      <Tab.Screen name="Today"  component={TodayScreen}     options={{ title: t('tabs.today') }} />
-      <Tab.Screen name="Report" component={ReportScreen}    options={{ title: t('tabs.report') }} />
-      <Tab.Screen name="More"   component={MoreScreen}      options={{ title: t('tabs.more') }} />
-    </Tab.Navigator>
+    <View style={{ flex: 1, backgroundColor: theme.background }}>
+      <View style={{ flex: 1, flexDirection: 'row' }}>
+        {visibleScreens.map((screenName, idx) => {
+          const Screen = SCREENS[screenName];
+          return (
+            <Pane
+              key={screenName}
+              screenName={screenName}
+              defaultTitle={t(TITLE_KEYS[screenName])}
+              visibleScreens={visibleScreens}
+              setActiveTab={(name) => setActiveTab(name as TabName)}
+              showDivider={idx < visibleScreens.length - 1}
+            >
+              <Screen />
+            </Pane>
+          );
+        })}
+      </View>
+
+      <View
+        style={{
+          flexDirection: 'row',
+          borderTopWidth: 1,
+          borderTopColor: theme.border,
+          backgroundColor: theme.surface,
+          paddingBottom: insets.bottom,
+        }}
+      >
+        {TABS.map((tab) => {
+          const isActive = tab === activeTab;
+          const [activeIcon, inactiveIcon] = ICONS[tab];
+          const color = isActive ? theme.primary : theme.textMuted;
+          return (
+            <TouchableOpacity
+              key={tab}
+              onPress={() => setActiveTab(tab)}
+              style={{ flex: 1, alignItems: 'center', paddingVertical: 8 }}
+              activeOpacity={0.6}
+            >
+              <Ionicons
+                name={isActive ? activeIcon : inactiveIcon}
+                size={24}
+                color={color}
+              />
+              <Text style={{ color, fontSize: 12, marginTop: 2 }}>
+                {t(TITLE_KEYS[tab])}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+    </View>
   );
 }

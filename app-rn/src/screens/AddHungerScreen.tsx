@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { ScrollView, View, Text, TouchableOpacity, Switch, Alert } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import { usePaneNavigation, usePaneFocusEffect } from '../navigation/PaneContext';
 import { useTranslation } from 'react-i18next';
 import { useHunger } from '../context/HungerContext';
 import { Intensity } from '../models/hunger-entry.model';
@@ -8,6 +8,7 @@ import { IntensityPicker } from '../components/IntensityPicker';
 import { DateTimeInput } from '../components/DateTimeInput';
 import { DurationPickerModal } from '../components/DurationPickerModal';
 import { useTheme } from '../context/ThemeContext';
+import { ScreenContainer } from '../components/ScreenContainer';
 
 function formatElapsed(ms: number): string {
   const totalMins = Math.floor(ms / 60000);
@@ -27,7 +28,8 @@ function formatDuration(mins: number): string {
   return `${h}h ${m}min`;
 }
 
-export default function AddHungerScreen({ navigation }: any) {
+export default function AddHungerScreen() {
+  const navigation = usePaneNavigation();
   const { draft, addEntry, saveDraft, clearDraft } = useHunger();
   const { theme, isDark } = useTheme();
   const { t } = useTranslation();
@@ -61,7 +63,7 @@ export default function AddHungerScreen({ navigation }: any) {
 
   const [durationModalVisible, setDurationModalVisible] = useState(false);
 
-  useFocusEffect(useCallback(() => {
+  usePaneFocusEffect(useCallback(() => {
     setEndTime(new Date());
     if (draft) {
       setEndIntensity(draft.intensity ?? 'medium');
@@ -103,6 +105,7 @@ export default function AddHungerScreen({ navigation }: any) {
 
   return (
     <ScrollView className="flex-1 bg-gray-50 dark:bg-gray-900" contentContainerClassName="pb-8">
+      <ScreenContainer>
 
       {/* Mode toggle */}
       <View className="flex-row m-4 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800" style={{ elevation: 1 }}>
@@ -209,6 +212,7 @@ export default function AddHungerScreen({ navigation }: any) {
         onCancel={() => setDurationModalVisible(false)}
       />
 
+      </ScreenContainer>
     </ScrollView>
   );
 }

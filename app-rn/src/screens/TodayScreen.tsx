@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { ScrollView, View, Text } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { usePaneNavigation } from '../navigation/PaneContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { useHunger } from '../context/HungerContext';
@@ -8,6 +8,7 @@ import { useTheme } from '../context/ThemeContext';
 import { AnimatedDot } from '../components/AnimatedDot';
 import { Intensity } from '../models/hunger-entry.model';
 import { isTodayEntry } from '../utils/entry';
+import { ScreenContainer } from '../components/ScreenContainer';
 
 function formatDuration(mins: number): string {
   const h = Math.floor(mins / 60);
@@ -21,7 +22,7 @@ export default function TodayScreen() {
   const { entries } = useHunger();
   const { theme } = useTheme();
   const { t } = useTranslation();
-  const navigation = useNavigation();
+  const navigation = usePaneNavigation();
   const todayEntries = entries.filter(isTodayEntry);
   const totalMins = todayEntries.reduce((s, e) => s + e.durationMinutes, 0);
 
@@ -46,7 +47,9 @@ export default function TodayScreen() {
   }
 
   return (
-    <ScrollView className="flex-1 bg-gray-50 dark:bg-gray-900" contentContainerStyle={{ padding: 16, gap: 12 }}>
+    <ScrollView className="flex-1 bg-gray-50 dark:bg-gray-900">
+      <ScreenContainer>
+        <View style={{ padding: 16, gap: 12 }}>
       {todayEntries.map(entry => {
         const color = intensityColor[entry.intensity];
         return (
@@ -72,6 +75,8 @@ export default function TodayScreen() {
           </View>
         );
       })}
+        </View>
+      </ScreenContainer>
     </ScrollView>
   );
 }
