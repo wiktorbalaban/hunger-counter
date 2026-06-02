@@ -6,6 +6,7 @@ import { useTheme } from '../context/ThemeContext';
 import { getConsent, setConsent } from '../services/sentry.service';
 import { LanguageSetting } from '../components/LanguageSetting';
 import { ScreenContainer } from '../components/ScreenContainer';
+import { DevTools } from '../components/DevTools';
 
 const PRIVACY_POLICY_URL = 'https://wiktorbalaban.github.io/hunger-counter/privacy-policy.html';
 
@@ -51,6 +52,8 @@ export default function MoreScreen() {
           <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
         </TouchableOpacity>
       </View>
+
+      <DevTools />
 
         </View>
       </ScreenContainer>
