@@ -40,7 +40,7 @@ export default function ReportScreen() {
   const { t } = useTranslation();
   const { width: windowWidth, height: windowHeight } = useWindowDimensions();
   const chartWidth = Math.min(windowWidth, SCREEN_MAX_WIDTH) - 48;
-  const chartHeight = Math.max(windowHeight - 420, 350);
+  const chartHeight = Math.max(windowHeight - 420, 450);
 
   const { lowData, mediumData, highData, labels, hasConc, hasAnyConc } = useMemo(() => {
     const days = buildDays();
