@@ -15,7 +15,8 @@
     "themeDefault": "Device default",
     "themeDefaultDescription": "Enable dark theme when enabled on the device.",
     "themeLight": "Light",
-    "themeDark": "Dark"
+    "themeDark": "Dark",
+    "rateApp": "Rate {{name}}"
   },
   "crashReporting": {
     "title": "Help improve the app",

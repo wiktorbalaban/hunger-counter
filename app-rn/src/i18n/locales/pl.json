@@ -15,7 +15,8 @@
     "themeDefault": "Ustawienia urządzenia",
     "themeDefaultDescription": "Włącz ciemny motyw, gdy jest on włączony na urządzeniu.",
     "themeLight": "Jasny",
-    "themeDark": "Ciemny"
+    "themeDark": "Ciemny",
+    "rateApp": "Oceń {{name}}"
   },
   "crashReporting": {
     "title": "Pomóż ulepszyć aplikację",

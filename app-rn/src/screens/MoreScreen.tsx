@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../context/ThemeContext';
 import { getConsent, setConsent } from '../services/sentry.service';
+import { requestReview } from '../services/rating.service';
 import { LanguageSetting } from '../components/LanguageSetting';
 import { ThemeSetting } from '../components/ThemeSetting';
 import { ScreenContainer } from '../components/ScreenContainer';
@@ -41,6 +42,18 @@ export default function MoreScreen() {
             thumbColor="#ffffff"
           />
         </View>
+        <TouchableOpacity
+          onPress={() => requestReview()}
+          className="flex-row items-center border-b border-gray-100 dark:border-gray-700"
+          style={{ padding: 16, gap: 12 }}
+          activeOpacity={0.6}
+        >
+          <Ionicons name="star-outline" size={22} color={theme.primary} />
+          <Text numberOfLines={1} className="flex-1 text-base text-gray-900 dark:text-gray-100">
+            {t('more.rateApp', { name: t('tabs.add') })}
+          </Text>
+          <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => Linking.openURL(PRIVACY_POLICY_URL)}
           className="flex-row items-center"

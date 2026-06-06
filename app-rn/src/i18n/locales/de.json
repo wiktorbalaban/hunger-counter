@@ -15,7 +15,8 @@
     "themeDefault": "Gerätestandard",
     "themeDefaultDescription": "Dunkles Design aktivieren, wenn auf dem Gerät aktiviert.",
     "themeLight": "Hell",
-    "themeDark": "Dunkel"
+    "themeDark": "Dunkel",
+    "rateApp": "{{name}} bewerten"
   },
   "crashReporting": {
     "title": "Hilf, die App zu verbessern",

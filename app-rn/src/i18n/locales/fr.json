@@ -15,7 +15,8 @@
     "themeDefault": "Réglages de l'appareil",
     "themeDefaultDescription": "Active le thème sombre si activé sur l'appareil.",
     "themeLight": "Clair",
-    "themeDark": "Sombre"
+    "themeDark": "Sombre",
+    "rateApp": "Évaluer {{name}}"
   },
   "crashReporting": {
     "title": "Aider à améliorer l'app",

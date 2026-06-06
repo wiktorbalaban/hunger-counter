@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { View, Text, ScrollView, useWindowDimensions } from 'react-native';
 import { VictoryBar, VictoryChart, VictoryStack, VictoryAxis, VictoryTheme } from 'victory-native';
 import { useTranslation } from 'react-i18next';
@@ -7,6 +7,7 @@ import { useTheme } from '../context/ThemeContext';
 import { AnimatedDot } from '../components/AnimatedDot';
 import { HungerEntry } from '../models/hunger-entry.model';
 import { ScreenContainer, SCREEN_MAX_WIDTH } from '../components/ScreenContainer';
+import { shouldRequestReview, requestReview } from '../services/rating.service';
 
 const DAYS_SHOWN = 10;
 
@@ -41,6 +42,12 @@ export default function ReportScreen() {
   const { width: windowWidth, height: windowHeight } = useWindowDimensions();
   const chartWidth = Math.min(windowWidth, SCREEN_MAX_WIDTH) - 48;
   const chartHeight = Math.max(windowHeight - 420, 450);
+
+  useEffect(() => {
+    if (shouldRequestReview(entries)) {
+      requestReview();
+    }
+  }, [entries]);
 
   const { lowData, mediumData, highData, labels, hasConc, hasAnyConc } = useMemo(() => {
     const days = buildDays();

@@ -14,8 +14,10 @@ import { registerIconSyncTask } from './src/tasks/iconSyncTask';
 import TabNavigator from './src/navigation/TabNavigator';
 import CrashReportingConsentModal from './src/components/CrashReportingConsentModal';
 import { initSentry, getConsent } from './src/services/sentry.service';
+import { markInstallDate } from './src/services/rating.service';
 
 initSentry();
+markInstallDate();
 
 function AppContent() {
   useAppIconSync();
