@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { TouchableOpacity, Text } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { TouchableOpacity, Text, AppState } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 interface Props {
@@ -13,11 +13,23 @@ export function DateTimeInput({ value, onChange, placeholder = 'Select date & ti
   const [showTime, setShowTime] = useState(false);
   const [pendingDate, setPendingDate] = useState<Date>(value ?? new Date());
 
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', (state) => {
+      if (state !== 'active') {
+        setShowDate(false);
+        setShowTime(false);
+      }
+    });
+    return () => sub.remove();
+  }, []);
+
   const onDateChange = (_: any, selected?: Date) => {
     setShowDate(false);
     if (!selected) return;
     setPendingDate(selected);
-    setShowTime(true);
+    setTimeout(() => {
+      if (AppState.currentState === 'active') setShowTime(true);
+    }, 100);
   };
 
   const onTimeChange = (_: any, selected?: Date) => {
