@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
-import { Modal, Text, TouchableOpacity, ScrollView, View } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { useTheme, ThemeMode } from '../context/ThemeContext';
+import { ListItemPicker } from './ListItemPicker';
 
-type ThemeOption = {
-  mode: ThemeMode;
-  labelKey: 'more.themeDefault' | 'more.themeLight' | 'more.themeDark';
-  descriptionKey?: 'more.themeDefaultDescription';
-};
+type ThemeMeta = { mode: ThemeMode; labelKey: 'more.themeDefault' | 'more.themeLight' | 'more.themeDark'; descriptionKey?: 'more.themeDefaultDescription' };
 
-const THEME_OPTIONS: ThemeOption[] = [
+const THEME_META: ThemeMeta[] = [
   { mode: 'default', labelKey: 'more.themeDefault', descriptionKey: 'more.themeDefaultDescription' },
   { mode: 'light',   labelKey: 'more.themeLight' },
   { mode: 'dark',    labelKey: 'more.themeDark' },
@@ -26,7 +23,13 @@ export function ThemeSetting() {
     setModalVisible(false);
   }
 
-  const currentLabelKey = THEME_OPTIONS.find(o => o.mode === themeMode)?.labelKey ?? 'more.themeDefault';
+  const currentLabelKey = THEME_META.find(o => o.mode === themeMode)?.labelKey ?? 'more.themeDefault';
+
+  const items = THEME_META.map(({ mode, labelKey, descriptionKey }) => ({
+    key: mode,
+    label: t(labelKey),
+    description: descriptionKey ? t(descriptionKey) : undefined,
+  }));
 
   return (
     <>
@@ -44,59 +47,14 @@ export function ThemeSetting() {
         <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
       </TouchableOpacity>
 
-      <Modal
+      <ListItemPicker
         visible={modalVisible}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <TouchableOpacity
-          className="flex-1 justify-center items-center"
-          style={{ backgroundColor: theme.modalOverlay, padding: 24 }}
-          activeOpacity={1}
-          onPress={() => setModalVisible(false)}
-        >
-          <TouchableOpacity
-            activeOpacity={1}
-            className="w-full rounded-2xl overflow-hidden"
-            style={{ backgroundColor: theme.surface, maxHeight: 400 }}
-          >
-            <Text
-              className="text-base font-semibold text-gray-900 dark:text-gray-100"
-              style={{ padding: 16, paddingBottom: 8 }}
-            >
-              {t('more.theme')}
-            </Text>
-            <ScrollView bounces={false}>
-              {THEME_OPTIONS.map(({ mode, labelKey, descriptionKey }, index) => {
-                const isLast = index === THEME_OPTIONS.length - 1;
-                const isSelected = themeMode === mode;
-                return (
-                  <TouchableOpacity
-                    key={mode}
-                    onPress={() => handleSelect(mode)}
-                    activeOpacity={0.6}
-                    className={`flex-row items-center${isLast ? '' : ' border-b border-gray-100 dark:border-gray-700'}`}
-                    style={{ padding: 16, gap: 12 }}
-                  >
-                    <View style={{ flex: 1 }}>
-                      <Text className="text-base text-gray-900 dark:text-gray-100">
-                        {t(labelKey)}
-                      </Text>
-                      {descriptionKey && (
-                        <Text className="text-base text-gray-500 dark:text-gray-400 mt-1">
-                          {t(descriptionKey)}
-                        </Text>
-                      )}
-                    </View>
-                    {isSelected && <Ionicons name="checkmark" size={20} color={theme.primary} />}
-                  </TouchableOpacity>
-                );
-              })}
-            </ScrollView>
-          </TouchableOpacity>
-        </TouchableOpacity>
-      </Modal>
+        title={t('more.theme')}
+        items={items}
+        selectedKey={themeMode}
+        onSelect={handleSelect}
+        onClose={() => setModalVisible(false)}
+      />
     </>
   );
 }
