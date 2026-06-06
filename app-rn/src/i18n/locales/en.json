@@ -10,7 +10,12 @@
     "privacyPolicy": "Privacy Policy",
     "crashReporting": "Send crash reports",
     "language": "Language",
-    "languageDefault": "Device language"
+    "languageDefault": "Device language",
+    "theme": "Theme",
+    "themeDefault": "Device default",
+    "themeDefaultDescription": "Enable dark theme when enabled on the device.",
+    "themeLight": "Light",
+    "themeDark": "Dark"
   },
   "crashReporting": {
     "title": "Help improve the app",

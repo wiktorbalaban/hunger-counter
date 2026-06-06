@@ -10,7 +10,12 @@
     "privacyPolicy": "Datenschutz",
     "crashReporting": "Absturzberichte senden",
     "language": "Sprache",
-    "languageDefault": "Gerätesprache"
+    "languageDefault": "Gerätesprache",
+    "theme": "Design",
+    "themeDefault": "Gerätestandard",
+    "themeDefaultDescription": "Dunkles Design aktivieren, wenn auf dem Gerät aktiviert.",
+    "themeLight": "Hell",
+    "themeDark": "Dunkel"
   },
   "crashReporting": {
     "title": "Hilf, die App zu verbessern",

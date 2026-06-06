@@ -10,7 +10,12 @@
     "privacyPolicy": "Polityka prywatności",
     "crashReporting": "Wysyłaj raporty o błędach",
     "language": "Język",
-    "languageDefault": "Język urządzenia"
+    "languageDefault": "Język urządzenia",
+    "theme": "Motyw",
+    "themeDefault": "Ustawienia urządzenia",
+    "themeDefaultDescription": "Włącz ciemny motyw, gdy jest on włączony na urządzeniu.",
+    "themeLight": "Jasny",
+    "themeDark": "Ciemny"
   },
   "crashReporting": {
     "title": "Pomóż ulepszyć aplikację",

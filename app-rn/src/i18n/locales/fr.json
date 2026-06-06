@@ -10,7 +10,12 @@
     "privacyPolicy": "Politique de confidentialité",
     "crashReporting": "Envoyer les rapports de plantage",
     "language": "Langue",
-    "languageDefault": "Langue de l'appareil"
+    "languageDefault": "Langue de l'appareil",
+    "theme": "Thème",
+    "themeDefault": "Réglages de l'appareil",
+    "themeDefaultDescription": "Active le thème sombre si activé sur l'appareil.",
+    "themeLight": "Clair",
+    "themeDark": "Sombre"
   },
   "crashReporting": {
     "title": "Aider à améliorer l'app",
