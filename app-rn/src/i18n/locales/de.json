@@ -47,7 +47,8 @@
   "report": {
     "title": "Hunger pro Tag",
     "subtitle": "Letzte {{count}} Tage",
-    "focusIssues": "Konzentrationsprobleme"
+    "focusIssues": "Konzentrationsprobleme",
+    "empty": "Noch keine Daten.\nErfasse Hunger, um den Bericht zu sehen."
   },
   "intensity": {
     "low": "Niedrig",

@@ -47,7 +47,8 @@
   "report": {
     "title": "Hunger per day",
     "subtitle": "Last {{count}} days",
-    "focusIssues": "Focus issues"
+    "focusIssues": "Focus issues",
+    "empty": "No data to show yet.\nLog hunger to see your report."
   },
   "intensity": {
     "low": "Low",

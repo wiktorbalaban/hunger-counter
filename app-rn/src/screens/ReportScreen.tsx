@@ -2,6 +2,7 @@ import React, { useEffect, useMemo } from 'react';
 import { View, Text, ScrollView, useWindowDimensions } from 'react-native';
 import { VictoryBar, VictoryChart, VictoryStack, VictoryAxis, VictoryTheme } from 'victory-native';
 import { useTranslation } from 'react-i18next';
+import { Ionicons } from '@expo/vector-icons';
 import { useHunger } from '../context/HungerContext';
 import { useTheme } from '../context/ThemeContext';
 import { AnimatedDot } from '../components/AnimatedDot';
@@ -49,7 +50,7 @@ export default function ReportScreen() {
     }
   }, [entries]);
 
-  const { lowData, mediumData, highData, labels, hasConc, hasAnyConc } = useMemo(() => {
+  const { lowData, mediumData, highData, labels, hasConc, hasAnyConc, hasData } = useMemo(() => {
     const days = buildDays();
     const low: { x: string; y: number }[]    = [];
     const medium: { x: string; y: number }[] = [];
@@ -67,7 +68,9 @@ export default function ReportScreen() {
       conc.push(de.some(e => e.concentrationProblems));
     });
 
-    return { lowData: low, mediumData: medium, highData: high, labels: lbls, hasConc: conc, hasAnyConc: conc.some(Boolean) };
+    const hasData = low.some(d => d.y > 0) || medium.some(d => d.y > 0) || high.some(d => d.y > 0);
+
+    return { lowData: low, mediumData: medium, highData: high, labels: lbls, hasConc: conc, hasAnyConc: conc.some(Boolean), hasData };
   }, [entries]);
 
   return (
@@ -78,6 +81,8 @@ export default function ReportScreen() {
           <Text className="font-semibold text-base mb-1 text-gray-500 dark:text-gray-400">{t('report.title')}</Text>
           <Text className="text-xs mb-2 text-gray-400 dark:text-gray-500">{t('report.subtitle', { count: DAYS_SHOWN })}</Text>
 
+          {hasData ? (
+          <>
           <VictoryChart
             horizontal
             theme={VictoryTheme.material}
@@ -133,6 +138,13 @@ export default function ReportScreen() {
               </View>
             ))}
           </View>
+          </>
+          ) : (
+          <View className="items-center justify-center" style={{ height: chartHeight, gap: 12 }}>
+            <Ionicons name="bar-chart-outline" size={64} color={theme.textMuted} />
+            <Text className="text-base text-center text-gray-400 dark:text-gray-500">{t('report.empty')}</Text>
+          </View>
+          )}
         </View>
         </ScreenContainer>
       </ScrollView>

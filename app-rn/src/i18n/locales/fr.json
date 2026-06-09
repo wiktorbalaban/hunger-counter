@@ -47,7 +47,8 @@
   "report": {
     "title": "Faim par jour",
     "subtitle": "{{count}} derniers jours",
-    "focusIssues": "Problèmes de concentration"
+    "focusIssues": "Problèmes de concentration",
+    "empty": "Aucune donnée à afficher.\nEnregistrez la faim pour voir le rapport."
   },
   "intensity": {
     "low": "Faible",

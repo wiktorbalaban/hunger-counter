@@ -47,7 +47,8 @@
   "report": {
     "title": "Głód na dzień",
     "subtitle": "Ostatnie {{count}} dni",
-    "focusIssues": "Problemy z koncentracją"
+    "focusIssues": "Problemy z koncentracją",
+    "empty": "Brak danych do wyświetlenia.\nZapisz głód, aby zobaczyć raport."
   },
   "intensity": {
     "low": "Niski",
