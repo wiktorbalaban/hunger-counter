@@ -117,7 +117,7 @@ export default function TabNavigator() {
                 size={24}
                 color={color}
               />
-              <Text style={{ color, fontSize: 12, marginTop: 2 }}>
+              <Text style={{ color, fontSize: 12, marginTop: 2, textAlign: 'center' }}>
                 {t(TITLE_KEYS[tab])}
               </Text>
             </TouchableOpacity>

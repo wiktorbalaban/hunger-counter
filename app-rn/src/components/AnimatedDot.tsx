@@ -26,7 +26,6 @@ export function AnimatedDot({ size = 7, color }: { size?: number; color?: string
         height: size,
         borderRadius: size / 2,
         backgroundColor: dotColor,
-        marginTop: 3,
       }}
     />
   );
