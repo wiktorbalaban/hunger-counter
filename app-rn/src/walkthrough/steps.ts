@@ -7,7 +7,6 @@
 
 export type WalkthroughStepId =
   | 'add-mode-toggle'
-  | 'add-intensity'
   | 'add-start-button'
   | 'tab-overview';
 
@@ -30,12 +29,6 @@ export const WALKTHROUGH_STEPS: WalkthroughStep[] = [
     targetKey: 'add.modeToggle',
     titleKey: 'walkthrough.modeToggle.title',
     bodyKey: 'walkthrough.modeToggle.body',
-  },
-  {
-    id: 'add-intensity',
-    targetKey: 'add.intensity',
-    titleKey: 'walkthrough.intensity.title',
-    bodyKey: 'walkthrough.intensity.body',
   },
   {
     id: 'add-start-button',

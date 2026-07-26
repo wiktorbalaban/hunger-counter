@@ -55,11 +55,9 @@ export default function AddHungerScreen() {
   }, [draft]);
 
   const [startTime,        setStartTime]        = useState(new Date());
-  const [startIntensity,   setStartIntensity]   = useState<Intensity | null>(null);
-  const [startConc,        setStartConc]        = useState(false);
 
   const [endTime,          setEndTime]          = useState(new Date());
-  const [endIntensity,     setEndIntensity]     = useState<Intensity>('medium');
+  const [endIntensity,     setEndIntensity]     = useState<Intensity>('low');
   const [endConc,          setEndConc]          = useState(false);
 
   const [logStart,         setLogStart]         = useState<Date | null>(null);
@@ -99,10 +97,10 @@ export default function AddHungerScreen() {
   };
 
   const handleStart = () => {
+    // Hunger details (intensity, focus issues) are set later on the in-progress
+    // screen, so the start action only records the start time.
     saveDraft({
       startTime: startTime.toISOString(),
-      intensity: startIntensity ?? undefined,
-      concentrationProblems: startConc,
     });
   };
 
@@ -147,16 +145,6 @@ export default function AddHungerScreen() {
         <View className="mx-4 gap-4">
           <Card title={t('add.startTime')}>
             <DateTimeInput value={startTime} onChange={setStartTime} placeholder={t('common.selectDateTime')} />
-          </Card>
-          <WalkthroughTarget targetKey="add.intensity">
-            <Card title={t('add.intensityOptional')}>
-              <IntensityPicker value={startIntensity} onChange={setStartIntensity} />
-            </Card>
-          </WalkthroughTarget>
-          <Card title={t('add.focusIssues')}>
-            <Row label={t('common.concentrationProblems')}>
-              <Switch value={startConc} onValueChange={setStartConc} trackColor={{ true: theme.primary, false: theme.border }} thumbColor={theme.surface} />
-            </Row>
           </Card>
           <WalkthroughTarget targetKey="add.startButton">
             <Animated.View style={{ transform: [{ scale: startPulse }] }}>
