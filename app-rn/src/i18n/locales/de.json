@@ -38,6 +38,10 @@
     "inProgress": "Hunger läuft",
     "startHunger": "Starten",
     "stopHunger": "Stoppen",
+    "todaySummary": "Tagesübersicht",
+    "todayEmpty": "Heute noch keine Sitzungen.",
+    "sessionsLabel": "Sitzungen",
+    "totalLabel": "Gesamt",
     "focusIssues": "Konzentrationsprobleme",
     "cancelSession": "Abbrechen",
     "invalidDuration": "Gültige Dauer eingeben"

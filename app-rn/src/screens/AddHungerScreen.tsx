@@ -10,6 +10,7 @@ import { DateTimeInput } from '../components/DateTimeInput';
 import { DurationPickerModal } from '../components/DurationPickerModal';
 import { useTheme } from '../context/ThemeContext';
 import { ScreenContainer } from '../components/ScreenContainer';
+import { isTodayEntry } from '../utils/entry';
 import { useWalkthroughTarget, WalkthroughTarget } from '../walkthrough/WalkthroughTarget';
 import { useWalkthrough } from '../walkthrough/WalkthroughContext';
 
@@ -33,7 +34,7 @@ function formatDuration(mins: number): string {
 
 export default function AddHungerScreen() {
   const navigation = usePaneNavigation();
-  const { draft, addEntry, saveDraft, clearDraft } = useHunger();
+  const { draft, entries, addEntry, saveDraft, clearDraft } = useHunger();
   const { theme, isDark } = useTheme();
   const { t } = useTranslation();
   const primaryBtnText = { color: isDark ? theme.primary : theme.onPrimary };
@@ -84,7 +85,8 @@ export default function AddHungerScreen() {
       Animated.timing(startPulse, { toValue: 1.01, duration: 200, useNativeDriver: true }),
       Animated.timing(startPulse, { toValue: 1,    duration: 200, useNativeDriver: true }),
     ]);
-    const seq = Animated.sequence([Animated.delay(450), beat(), Animated.delay(120), beat()]);
+    // Wait ~2s so the user can read the Today summary before the button bounces.
+    const seq = Animated.sequence([Animated.delay(2000), beat(), Animated.delay(120), beat()]);
     seq.start();
     return () => seq.stop();
   }, [mode, draft, activeStep, startPulse]));
@@ -113,6 +115,10 @@ export default function AddHungerScreen() {
     activeStep?.id === 'add-focus' ||
     activeStep?.id === 'add-stop' ||
     activeStep?.id === 'tab-overview';
+
+  // Today's totals — shown as a summary on the start screen so it doesn't feel empty.
+  const todayEntries = entries.filter(isTodayEntry);
+  const todayMinutes = todayEntries.reduce((sum, e) => sum + e.durationMinutes, 0);
 
   const handleSaveTracked = () => {
     if (!draft?.startTime) return;
@@ -153,6 +159,22 @@ export default function AddHungerScreen() {
       {/* ── TRACK MODE ── */}
       {mode === 'track' && !draft && !tourDraftStep && (
         <View className="mx-4 gap-4">
+          <Card title={t('add.todaySummary')}>
+            {todayEntries.length === 0 ? (
+              <Text className="text-gray-400 dark:text-gray-500 text-base">{t('add.todayEmpty')}</Text>
+            ) : (
+              <View className="flex-row">
+                <View className="flex-1 items-center">
+                  <Text style={{ color: theme.primary }} className="text-3xl font-bold">{todayEntries.length}</Text>
+                  <Text className="text-gray-500 dark:text-gray-400 text-xs mt-1">{t('add.sessionsLabel')}</Text>
+                </View>
+                <View className="flex-1 items-center">
+                  <Text style={{ color: theme.primary }} className="text-3xl font-bold">{formatDuration(todayMinutes)}</Text>
+                  <Text className="text-gray-500 dark:text-gray-400 text-xs mt-1">{t('add.totalLabel')}</Text>
+                </View>
+              </View>
+            )}
+          </Card>
           <Card title={t('add.startTime')}>
             <DateTimeInput value={startTime} onChange={setStartTime} placeholder={t('common.selectDateTime')} />
           </Card>

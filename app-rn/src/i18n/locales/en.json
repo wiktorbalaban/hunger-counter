@@ -38,6 +38,10 @@
     "inProgress": "Hunger in progress",
     "startHunger": "Start hunger",
     "stopHunger": "Stop hunger",
+    "todaySummary": "Today summary",
+    "todayEmpty": "No sessions logged yet today.",
+    "sessionsLabel": "Sessions",
+    "totalLabel": "Total",
     "focusIssues": "Focus issues",
     "cancelSession": "Cancel",
     "invalidDuration": "Enter a valid duration"

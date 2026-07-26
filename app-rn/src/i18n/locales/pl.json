@@ -38,6 +38,10 @@
     "inProgress": "Aktywny głód",
     "startHunger": "Rozpocznij",
     "stopHunger": "Zatrzymaj",
+    "todaySummary": "Podsumowanie dnia",
+    "todayEmpty": "Brak sesji dzisiaj.",
+    "sessionsLabel": "Sesje",
+    "totalLabel": "Łącznie",
     "focusIssues": "Problemy z koncentracją",
     "cancelSession": "Anuluj",
     "invalidDuration": "Podaj prawidłowy czas"
