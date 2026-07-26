@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { ScrollView, View, Text, TouchableOpacity, Switch, Alert } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { ScrollView, View, Text, TouchableOpacity, Switch, Alert, Animated } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { usePaneNavigation, usePaneFocusEffect } from '../navigation/PaneContext';
 import { useTranslation } from 'react-i18next';
 import { useHunger } from '../context/HungerContext';
@@ -10,6 +11,7 @@ import { DurationPickerModal } from '../components/DurationPickerModal';
 import { useTheme } from '../context/ThemeContext';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { useWalkthroughTarget, WalkthroughTarget } from '../walkthrough/WalkthroughTarget';
+import { useWalkthrough } from '../walkthrough/WalkthroughContext';
 
 function formatElapsed(ms: number): string {
   const totalMins = Math.floor(ms / 60000);
@@ -39,6 +41,8 @@ export default function AddHungerScreen() {
   const [mode, setMode] = useState<'track' | 'log'>('track');
   const [now, setNow] = useState(new Date());
   const { ref: modeToggleRef } = useWalkthroughTarget('add.modeToggle');
+  const { activeStep } = useWalkthrough();
+  const startPulse = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
     if (!draft) return;
@@ -72,6 +76,20 @@ export default function AddHungerScreen() {
       setEndConc(draft.concentrationProblems ?? false);
     }
   }, [draft]));
+
+  // One-shot attention pulse on the Start button when the user enters the
+  // screen (only when it's actually shown — track mode, no session running).
+  usePaneFocusEffect(useCallback(() => {
+    if (mode !== 'track' || draft || activeStep) return;
+    startPulse.setValue(1);
+    const beat = () => Animated.sequence([
+      Animated.timing(startPulse, { toValue: 1.01, duration: 200, useNativeDriver: true }),
+      Animated.timing(startPulse, { toValue: 1,    duration: 200, useNativeDriver: true }),
+    ]);
+    const seq = Animated.sequence([Animated.delay(450), beat(), Animated.delay(120), beat()]);
+    seq.start();
+    return () => seq.stop();
+  }, [mode, draft, activeStep, startPulse]));
 
   const openDurationModal = () => setDurationModalVisible(true);
 
@@ -141,9 +159,26 @@ export default function AddHungerScreen() {
             </Row>
           </Card>
           <WalkthroughTarget targetKey="add.startButton">
-            <TouchableOpacity onPress={handleStart} className="rounded-xl py-4 items-center" style={{ elevation: 2, backgroundColor: theme.buttonSurface }}>
-              <Text style={primaryBtnText} className="font-bold text-base">{t('add.startHunger')}</Text>
-            </TouchableOpacity>
+            <Animated.View style={{ transform: [{ scale: startPulse }] }}>
+              <TouchableOpacity
+                onPress={handleStart}
+                activeOpacity={0.85}
+                className="rounded-xl py-5 items-center"
+                style={{
+                  backgroundColor: theme.buttonSurface,
+                  elevation: 4,
+                  shadowColor: '#000',
+                  shadowOpacity: 0.18,
+                  shadowRadius: 8,
+                  shadowOffset: { width: 0, height: 3 },
+                }}
+              >
+                <View className="flex-row items-center" style={{ gap: 8 }}>
+                  <Ionicons name="play" size={20} color={primaryBtnText.color} />
+                  <Text style={primaryBtnText} className="font-bold text-lg">{t('add.startHunger')}</Text>
+                </View>
+              </TouchableOpacity>
+            </Animated.View>
           </WalkthroughTarget>
         </View>
       )}
