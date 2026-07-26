@@ -65,7 +65,7 @@
     "save": "Save",
     "cancel": "Cancel",
     "set": "Set",
-    "concentrationProblems": "Concentration problems",
+    "concentrationProblems": "Focus issues",
     "selectDateTime": "Select date & time",
     "now": "Now"
   },
@@ -87,7 +87,7 @@
     },
     "focus": {
       "title": "Focus issues",
-      "body": "Flag it when hunger makes it hard to concentrate."
+      "body": "Flag it when hunger makes it hard to focus."
     },
     "stop": {
       "title": "Stop when done",
