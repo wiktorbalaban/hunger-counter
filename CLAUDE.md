@@ -22,17 +22,18 @@ app-rn/
     services/
       hunger.service.ts     MMKV storage (synchronous)
       sentry.service.ts     Sentry init + opt-in consent stored in MMKV
+      walkthrough.service.ts  MMKV set of seen walkthrough step ids (getSeenIds/markSeen/resetSeen)
     context/              HungerContext.tsx — app-wide state, ThemeContext.tsx — theme + dark mode
     components/
       IntensityPicker.tsx          Low/Medium/High segmented control
       DateTimeInput.tsx            native date+time picker (Android dialog flow)
-      AnimatedDot.tsx              twinkling dot for concentration indicator
+      AnimatedDot.tsx              twinkling dot for the focus-issues indicator
       DurationPickerModal.tsx      wheel picker for duration (uses @quidone/react-native-wheel-picker)
       CrashReportingConsentModal.tsx  first-launch consent dialog for Sentry
       LanguageSetting.tsx          settings row + modal for picking language
       ScreenContainer.tsx          max-width (600px) wrapper for screens — centers content on tablets
     screens/
-      AddHungerScreen.tsx   Tab 1 — Track now + Log past
+      AddHungerScreen.tsx   Tab 1 — Track now (start screen + Today summary / in-progress) + Log past
       TodayScreen.tsx       Tab 2 — Today's entries
       ReportScreen.tsx      Tab 3 — Horizontal stacked bar chart (last 10 days)
       MoreScreen.tsx        Tab 4 — Language, crash reporting, privacy policy
@@ -48,12 +49,17 @@ app-rn/
       iconSyncTask.ts       background task — resets icon after 3am
     utils/
       entry.ts              shared helpers (isTodayEntry)
+    walkthrough/
+      steps.ts              ordered tour steps (id, targetKey, title/body keys, placement?, interactive?)
+      WalkthroughContext.tsx  provider — target registry + controller (run/next/prev/skip) + auto-run + Android back
+      WalkthroughTarget.tsx   useWalkthroughTarget(key) hook + wrapper — registers a ref for measurement
+      WalkthroughOverlay.tsx  full-screen SVG-cutout spotlight + tooltip card (in-tree, NOT a Modal)
     theme/
       default-theme.ts      light/dark Theme objects shared by ThemeContext
     i18n/
       index.ts              i18next init, loads locales dynamically via require.context
       locales/              en.json, pl.json, de.json, fr.json — each starts with `_name` (self-name in own language)
-  App.tsx                   root — NavigationContainer + HungerProvider + ThemeProvider + Sentry init
+  App.tsx                   root — providers + TabNavigator + consent modal + WalkthroughProvider/WalkthroughOverlay + Sentry init
   app.plugin.js             config plugin: dynamic icons + no-tablet supports-screens (currently disabled)
   tailwind.config.js        darkMode: 'media' + custom accent colors
   global.css                Tailwind directives
@@ -203,6 +209,39 @@ The companion (right) pane on tablets gets a muted header via `companionHeaderBg
 
 For `ReportScreen` the chart uses `useWindowDimensions()` for width/height so the chart re-sizes on rotation. The chart has a minimum height of 350px (`Math.max(windowHeight - 420, 350)`).
 
+## Walkthrough (new-user onboarding)
+
+An interactive spotlight/coachmark tour that dims the screen, cuts a rounded hole around a real UI element, and shows a tooltip with progress dots. Lives in [src/walkthrough/](app-rn/src/walkthrough/).
+
+### Trigger — first launch + replayable + new-feature-aware
+
+The tour is an **ordered list of steps, each with a stable `id`** ([steps.ts](app-rn/src/walkthrough/steps.ts)). [walkthrough.service.ts](app-rn/src/services/walkthrough.service.ts) persists a **set of seen ids** in MMKV (`walkthrough-storage`). On launch the provider runs only the *unseen* steps:
+
+- Fresh install → all steps run.
+- Ship a new feature → add a step with a fresh `id`; on next launch **only that step** shows.
+- "Show walkthrough" row in the More tab replays **all** steps (`run(steps, { force: true })`).
+
+Auto-run is gated on `enabled={!showConsent}` in `App.tsx`, so it starts only **after** the crash-consent modal is dismissed. Seen ids are marked on finish/skip.
+
+### Architecture
+
+- **Target registry** — screens call `useWalkthroughTarget('key')` (or wrap with `<WalkthroughTarget targetKey>`) to register a ref under a string key. The overlay pulls the on-screen rect with `measureInWindow`. There are no testIDs/refs otherwise. Always set `collapsable={false}` on the target (Android flattens style-less Views, breaking measurement).
+- **Overlay is an in-tree full-screen `View` (zIndex 1000), NOT a RN `<Modal>`.** A Modal is a separate Android window whose coordinate origin differs from `measureInWindow`, which mis-positions the spotlight. To stay pixel-accurate the overlay **self-calibrates**: it measures its own container too and positions targets *relative to it* (`target − container`).
+- **Cutout** = one `react-native-svg` `<Path fillRule="evenodd">` (outer rect + rounded inner hole). Animations use the RN `Animated` API — **not** `react-native-reanimated` (v4 needs the `react-native-worklets` babel plugin, which isn't configured).
+- **No navigation during the tour.** The overlay renders outside any Pane so it can't use `usePaneNavigation`; every step's target is arranged to already be on the current screen. The only real `navigate` is the More-tab replay (`navigate('Add')` before `run`).
+
+### Fake-interactive step + faked in-progress screen
+
+One step (`add-start-button`) is `interactive: true`. Instead of passing the tap to the real Start button (which would create a real draft and break back-navigation), the overlay puts its **own** `Pressable` over the spotlight hole that calls `next()` — the tap is handled entirely by the tour and the real control never fires. The subsequent "in-progress" steps (intensity/focus/stop) are shown by rendering the draft layout as a **preview** driven by `tourDraftStep` in `AddHungerScreen` (based on `activeStep.id`), **without** creating a real session. This keeps the whole tour reversible — hardware **back** (`prev()`) works on every step because each step's target is always mounted. A final `tour-complete` step returns to the start screen.
+
+Current sequence: mode toggle → **Start (interactive)** → intensity → focus → stop → tabs → complete.
+
+### Adding a step
+
+1. Add it to `WALKTHROUGH_STEPS` in [steps.ts](app-rn/src/walkthrough/steps.ts) with a fresh `id` (never reuse) and a `targetKey`.
+2. Add `walkthrough.<...>` title/body keys to all four locale files.
+3. Register the target where it renders via `useWalkthroughTarget` / `<WalkthroughTarget>`. If it's on the in-progress screen, include the id in `tourDraftStep`.
+
 ## Internationalization
 
 Supported locales: en, pl, de, fr.
@@ -302,11 +341,14 @@ Without Metro running the app will crash with "unable to load script".
 - MMKV storage is synchronous — no async/await, no loading states. Use `createMMKV({ id: 'storage-name' })` (NOT `new MMKV()`).
 - `HungerContext` initialises directly from MMKV on mount (no flicker)
 - `DateTimeInput` opens date picker then time picker sequentially (Android native dialogs)
-- Concentration dots use React Native `Animated` API (twinkling loop)
+- Focus-issues dots use React Native `Animated` API (twinkling loop)
 - Report chart uses **horizontal** stacked bars (victory-native `VictoryChart horizontal`) — day labels on Y axis, duration on X axis
 - Day labels use `toLocaleDateString(undefined, { day: '2-digit', month: '2-digit' })` — locale-aware DD/MM (or MM/DD, DD.MM, etc. depending on device language)
 - Chart sizing uses `useWindowDimensions()` (not `Dimensions.get()`) so it updates on rotation; chart height has a minimum of 350px
 - Log past mode: if no start time selected, defaults to current time on save
+- Track-now start screen only records the **start time**; intensity + focus issues are set on the in-progress (draft) screen, so hunger details live in one place. Start button = `play` icon + one-shot attention pulse on screen focus (suppressed while a walkthrough step is active); the in-progress Stop button = `stop` icon.
+- The start screen shows a "Today summary" card (session count + total duration) between the mode toggle and the start-time field.
+- Terminology: user-facing English uses "Focus issues" everywhere; the `HungerEntry.concentrationProblems` field name is internal (not user-visible) and kept as-is. pl/de/fr use their single natural "concentration" term.
 - Screens use the custom navigation hooks from [PaneContext](app-rn/src/navigation/PaneContext.tsx), NOT `@react-navigation/native` — see "Navigation" section above
 - Screens should be wrapped in `<ScreenContainer>` to constrain max width on tablets — see [src/components/ScreenContainer.tsx](app-rn/src/components/ScreenContainer.tsx)
 - Edge-to-edge mode is implicitly enabled (SDK 35+). The nav-bar button icons follow the theme via `NavigationBar.setButtonStyleAsync()` in `App.tsx`. No `setBackgroundColorAsync` — colors come from your `SafeAreaView` content drawn behind the transparent system bar.
