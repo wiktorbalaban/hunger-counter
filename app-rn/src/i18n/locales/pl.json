@@ -75,15 +75,27 @@
     },
     "intensity": {
       "title": "Określ intensywność",
-      "body": "Opcjonalnie zaznacz, jak silny jest głód — niski, średni lub wysoki."
+      "body": "Zaznacz, jak silny jest głód — niski, średni lub wysoki."
     },
     "startButton": {
-      "title": "Rozpocznij śledzenie",
-      "body": "Naciśnij, aby rozpocząć sesję głodu. Możesz ją zakończyć i zapisać później."
+      "title": "Rozpocznij sesję",
+      "body": "Śmiało — naciśnij Rozpocznij. Szczegóły ustawisz za chwilę."
+    },
+    "focus": {
+      "title": "Problemy z koncentracją",
+      "body": "Zaznacz, jeśli głód utrudnia skupienie."
+    },
+    "stop": {
+      "title": "Zatrzymaj po zakończeniu",
+      "body": "Naciśnij Zatrzymaj, aby zakończyć sesję i zapisać ją w historii."
     },
     "tabOverview": {
       "title": "Znajdź swoją historię",
       "body": "Dziś pokazuje Twoje wpisy, a Raport przedstawia trendy w czasie."
+    },
+    "complete": {
+      "title": "Koniec samouczka",
+      "body": "Rozpocznij sesję głodu, kiedy tylko chcesz."
     }
   }
 }

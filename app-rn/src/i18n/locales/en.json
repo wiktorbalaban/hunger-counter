@@ -75,15 +75,27 @@
     },
     "intensity": {
       "title": "Rate the intensity",
-      "body": "Optionally mark how strong the hunger feels — low, medium, or high."
+      "body": "Mark how strong the hunger feels — low, medium, or high."
     },
     "startButton": {
-      "title": "Start tracking",
-      "body": "Tap here to begin a hunger session. You can end and save it later."
+      "title": "Start a session",
+      "body": "Go ahead — tap Start to begin. You'll set the details next."
+    },
+    "focus": {
+      "title": "Focus issues",
+      "body": "Flag it when hunger makes it hard to concentrate."
+    },
+    "stop": {
+      "title": "Stop when done",
+      "body": "Tap Stop to end the session and save it to your history."
     },
     "tabOverview": {
       "title": "Find your history",
       "body": "Today lists what you logged, and Report charts your trends over time."
+    },
+    "complete": {
+      "title": "Tour complete",
+      "body": "Start a hunger session whenever you like."
     }
   }
 }

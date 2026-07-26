@@ -163,6 +163,7 @@ export function WalkthroughOverlay() {
 
   const primaryTextColor = isDark ? theme.primary : theme.onPrimary;
   const cardWidth = Math.min(CARD_MAX_WIDTH, W - 2 * SCREEN_PAD);
+  const interactive = !!activeStep.interactive;
 
   return (
     <Animated.View
@@ -177,8 +178,22 @@ export function WalkthroughOverlay() {
       >
       {rect && cut && cardStyle && (
         <>
-          {/* Tap the dimmed area to advance. */}
-          <Pressable style={StyleSheet.absoluteFill} onPress={next} />
+          {/* Touch layer. Interactive steps make the spotlight itself a tap
+              target that advances the tour — the tap is handled entirely here
+              and never reaches the real control, so the flow stays reversible.
+              The surrounding frame is blocked so only the highlight advances.
+              Non-interactive steps advance on any tap. */}
+          {interactive ? (
+            <>
+              <Pressable onPress={() => {}} style={{ position: 'absolute', left: 0, right: 0, top: 0, height: cut.y }} />
+              <Pressable onPress={() => {}} style={{ position: 'absolute', left: 0, right: 0, top: cut.y + cut.height, bottom: 0 }} />
+              <Pressable onPress={() => {}} style={{ position: 'absolute', top: cut.y, height: cut.height, left: 0, width: cut.x }} />
+              <Pressable onPress={() => {}} style={{ position: 'absolute', top: cut.y, height: cut.height, left: cut.x + cut.width, right: 0 }} />
+              <Pressable onPress={next} style={{ position: 'absolute', top: cut.y, left: cut.x, width: cut.width, height: cut.height }} />
+            </>
+          ) : (
+            <Pressable style={StyleSheet.absoluteFill} onPress={next} />
+          )}
 
           {/* Scrim with a hole cut out around the target. */}
           <Svg
@@ -254,20 +269,22 @@ export function WalkthroughOverlay() {
                     </Text>
                   </TouchableOpacity>
                 )}
-                <TouchableOpacity
-                  onPress={next}
-                  activeOpacity={0.7}
-                  style={{
-                    backgroundColor: theme.buttonSurface,
-                    borderRadius: 10,
-                    paddingVertical: 10,
-                    paddingHorizontal: 20,
-                  }}
-                >
-                  <Text style={{ color: primaryTextColor, fontWeight: '700' }}>
-                    {isLast ? t('walkthrough.gotIt') : t('walkthrough.next')}
-                  </Text>
-                </TouchableOpacity>
+                {!interactive && (
+                  <TouchableOpacity
+                    onPress={next}
+                    activeOpacity={0.7}
+                    style={{
+                      backgroundColor: theme.buttonSurface,
+                      borderRadius: 10,
+                      paddingVertical: 10,
+                      paddingHorizontal: 20,
+                    }}
+                  >
+                    <Text style={{ color: primaryTextColor, fontWeight: '700' }}>
+                      {isLast ? t('walkthrough.gotIt') : t('walkthrough.next')}
+                    </Text>
+                  </TouchableOpacity>
+                )}
               </View>
             </View>
           </View>

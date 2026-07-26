@@ -75,15 +75,27 @@
     },
     "intensity": {
       "title": "Intensität bewerten",
-      "body": "Markiere optional, wie stark der Hunger ist — niedrig, mittel oder hoch."
+      "body": "Markiere, wie stark der Hunger ist — niedrig, mittel oder hoch."
     },
     "startButton": {
-      "title": "Verfolgung starten",
-      "body": "Tippe hier, um eine Hunger-Sitzung zu starten. Du kannst sie später beenden und speichern."
+      "title": "Sitzung starten",
+      "body": "Los geht's — tippe auf Starten. Die Details folgen gleich."
+    },
+    "focus": {
+      "title": "Konzentrationsprobleme",
+      "body": "Markiere es, wenn der Hunger die Konzentration stört."
+    },
+    "stop": {
+      "title": "Zum Beenden stoppen",
+      "body": "Tippe auf Stoppen, um die Sitzung zu beenden und zu speichern."
     },
     "tabOverview": {
       "title": "Deinen Verlauf finden",
       "body": "Heute zeigt deine Einträge, und Bericht stellt deine Trends im Zeitverlauf dar."
+    },
+    "complete": {
+      "title": "Rundgang beendet",
+      "body": "Starte eine Hunger-Sitzung, wann immer du möchtest."
     }
   }
 }

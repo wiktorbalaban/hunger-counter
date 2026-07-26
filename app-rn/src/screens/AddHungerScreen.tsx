@@ -104,6 +104,16 @@ export default function AddHungerScreen() {
     });
   };
 
+  // During the walkthrough, render the in-progress (draft) layout for the
+  // draft-screen steps even without a real session, so the tour can spotlight
+  // intensity / focus / stop. The tap on "Start" is handled by the overlay and
+  // never creates a real draft, which keeps the whole tour reversible.
+  const tourDraftStep =
+    activeStep?.id === 'add-intensity' ||
+    activeStep?.id === 'add-focus' ||
+    activeStep?.id === 'add-stop' ||
+    activeStep?.id === 'tab-overview';
+
   const handleSaveTracked = () => {
     if (!draft?.startTime) return;
     const start = new Date(draft.startTime);
@@ -141,7 +151,7 @@ export default function AddHungerScreen() {
       </View>
 
       {/* ── TRACK MODE ── */}
-      {mode === 'track' && !draft && (
+      {mode === 'track' && !draft && !tourDraftStep && (
         <View className="mx-4 gap-4">
           <Card title={t('add.startTime')}>
             <DateTimeInput value={startTime} onChange={setStartTime} placeholder={t('common.selectDateTime')} />
@@ -171,43 +181,49 @@ export default function AddHungerScreen() {
         </View>
       )}
 
-      {mode === 'track' && !!draft && (
+      {mode === 'track' && (!!draft || tourDraftStep) && (
         <View className="mx-4 gap-4">
           <View className="bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/60 rounded-xl p-4 flex-row items-center justify-between">
             <Text className="font-bold text-amber-900 dark:text-amber-200 text-base">{t('add.inProgress')}</Text>
             <Text className="text-amber-800 dark:text-amber-300 font-semibold text-2xl">
-              {draft.startTime ? formatElapsed(now.getTime() - new Date(draft.startTime).getTime()) : '—'}
+              {draft?.startTime ? formatElapsed(now.getTime() - new Date(draft.startTime).getTime()) : '—'}
             </Text>
           </View>
           <Card title={t('add.endTime')}>
             <DateTimeInput value={endTime} onChange={setEndTime} placeholder={t('common.selectDateTime')} />
           </Card>
-          <Card title={t('add.intensity')}>
-            <IntensityPicker value={endIntensity} onChange={setEndIntensity} />
-          </Card>
-          <Card title={t('add.focusIssues')}>
-            <Row label={t('common.concentrationProblems')}>
-              <Switch value={endConc} onValueChange={setEndConc} trackColor={{ true: theme.primary, false: theme.border }} thumbColor={theme.surface} />
-            </Row>
-          </Card>
-          <TouchableOpacity
-            onPress={handleSaveTracked}
-            activeOpacity={0.85}
-            className="rounded-xl py-5 items-center"
-            style={{
-              backgroundColor: theme.buttonSurface,
-              elevation: 4,
-              shadowColor: '#000',
-              shadowOpacity: 0.18,
-              shadowRadius: 8,
-              shadowOffset: { width: 0, height: 3 },
-            }}
-          >
-            <View className="flex-row items-center" style={{ gap: 8 }}>
-              <Ionicons name="stop" size={20} color={primaryBtnText.color} />
-              <Text style={primaryBtnText} className="font-bold text-lg">{t('add.stopHunger')}</Text>
-            </View>
-          </TouchableOpacity>
+          <WalkthroughTarget targetKey="add.intensity">
+            <Card title={t('add.intensity')}>
+              <IntensityPicker value={endIntensity} onChange={setEndIntensity} />
+            </Card>
+          </WalkthroughTarget>
+          <WalkthroughTarget targetKey="add.focus">
+            <Card title={t('add.focusIssues')}>
+              <Row label={t('common.concentrationProblems')}>
+                <Switch value={endConc} onValueChange={setEndConc} trackColor={{ true: theme.primary, false: theme.border }} thumbColor={theme.surface} />
+              </Row>
+            </Card>
+          </WalkthroughTarget>
+          <WalkthroughTarget targetKey="add.stopButton">
+            <TouchableOpacity
+              onPress={handleSaveTracked}
+              activeOpacity={0.85}
+              className="rounded-xl py-5 items-center"
+              style={{
+                backgroundColor: theme.buttonSurface,
+                elevation: 4,
+                shadowColor: '#000',
+                shadowOpacity: 0.18,
+                shadowRadius: 8,
+                shadowOffset: { width: 0, height: 3 },
+              }}
+            >
+              <View className="flex-row items-center" style={{ gap: 8 }}>
+                <Ionicons name="stop" size={20} color={primaryBtnText.color} />
+                <Text style={primaryBtnText} className="font-bold text-lg">{t('add.stopHunger')}</Text>
+              </View>
+            </TouchableOpacity>
+          </WalkthroughTarget>
           <TouchableOpacity onPress={() => clearDraft()} className="border border-gray-300 dark:border-gray-600 rounded-xl py-4 items-center">
             <Text className="text-gray-600 dark:text-gray-400 font-semibold">{t('add.cancelSession')}</Text>
           </TouchableOpacity>

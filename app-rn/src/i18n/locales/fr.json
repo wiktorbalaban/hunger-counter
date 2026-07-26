@@ -75,15 +75,27 @@
     },
     "intensity": {
       "title": "Évaluer l'intensité",
-      "body": "Indiquez éventuellement l'intensité de la faim — faible, modérée ou élevée."
+      "body": "Indiquez l'intensité de la faim — faible, modérée ou élevée."
     },
     "startButton": {
-      "title": "Commencer le suivi",
-      "body": "Appuyez ici pour démarrer une session de faim. Vous pourrez la terminer et l'enregistrer plus tard."
+      "title": "Démarrer une session",
+      "body": "Allez-y — appuyez sur Démarrer. Les détails viennent ensuite."
+    },
+    "focus": {
+      "title": "Problèmes de concentration",
+      "body": "Signalez-le si la faim gêne votre concentration."
+    },
+    "stop": {
+      "title": "Arrêter une fois terminé",
+      "body": "Appuyez sur Arrêter pour terminer la session et l'enregistrer."
     },
     "tabOverview": {
       "title": "Retrouvez votre historique",
       "body": "Aujourd'hui affiche vos entrées, et Rapport présente vos tendances au fil du temps."
+    },
+    "complete": {
+      "title": "Visite terminée",
+      "body": "Démarrez une session de faim quand vous voulez."
     }
   }
 }
