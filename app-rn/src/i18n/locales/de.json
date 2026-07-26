@@ -37,6 +37,7 @@
     "setDuration": "Dauer einstellen",
     "inProgress": "Hunger läuft",
     "startHunger": "Starten",
+    "stopHunger": "Stoppen",
     "focusIssues": "Konzentrationsprobleme",
     "cancelSession": "Abbrechen",
     "invalidDuration": "Gültige Dauer eingeben"

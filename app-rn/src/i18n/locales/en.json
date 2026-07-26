@@ -37,6 +37,7 @@
     "setDuration": "Set duration",
     "inProgress": "Hunger in progress",
     "startHunger": "Start hunger",
+    "stopHunger": "Stop hunger",
     "focusIssues": "Focus issues",
     "cancelSession": "Cancel",
     "invalidDuration": "Enter a valid duration"

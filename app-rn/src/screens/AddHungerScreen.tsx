@@ -72,7 +72,7 @@ export default function AddHungerScreen() {
   usePaneFocusEffect(useCallback(() => {
     setEndTime(new Date());
     if (draft) {
-      setEndIntensity(draft.intensity ?? 'medium');
+      setEndIntensity(draft.intensity ?? 'low');
       setEndConc(draft.concentrationProblems ?? false);
     }
   }, [draft]));
@@ -163,7 +163,7 @@ export default function AddHungerScreen() {
               <TouchableOpacity
                 onPress={handleStart}
                 activeOpacity={0.85}
-                className="rounded-xl py-5 items-center"
+                className="rounded-2xl py-7 items-center"
                 style={{
                   backgroundColor: theme.buttonSurface,
                   elevation: 4,
@@ -173,9 +173,9 @@ export default function AddHungerScreen() {
                   shadowOffset: { width: 0, height: 3 },
                 }}
               >
-                <View className="flex-row items-center" style={{ gap: 8 }}>
-                  <Ionicons name="play" size={20} color={primaryBtnText.color} />
-                  <Text style={primaryBtnText} className="font-bold text-lg">{t('add.startHunger')}</Text>
+                <View className="flex-row items-center" style={{ gap: 10 }}>
+                  <Ionicons name="play" size={26} color={primaryBtnText.color} />
+                  <Text style={primaryBtnText} className="font-bold text-xl">{t('add.startHunger')}</Text>
                 </View>
               </TouchableOpacity>
             </Animated.View>
@@ -202,8 +202,23 @@ export default function AddHungerScreen() {
               <Switch value={endConc} onValueChange={setEndConc} trackColor={{ true: theme.primary, false: theme.border }} thumbColor={theme.surface} />
             </Row>
           </Card>
-          <TouchableOpacity onPress={handleSaveTracked} className="rounded-xl py-4 items-center" style={{ elevation: 2, backgroundColor: theme.buttonSurface }}>
-            <Text style={primaryBtnText} className="font-bold text-base">{t('common.save')}</Text>
+          <TouchableOpacity
+            onPress={handleSaveTracked}
+            activeOpacity={0.85}
+            className="rounded-xl py-5 items-center"
+            style={{
+              backgroundColor: theme.buttonSurface,
+              elevation: 4,
+              shadowColor: '#000',
+              shadowOpacity: 0.18,
+              shadowRadius: 8,
+              shadowOffset: { width: 0, height: 3 },
+            }}
+          >
+            <View className="flex-row items-center" style={{ gap: 8 }}>
+              <Ionicons name="stop" size={20} color={primaryBtnText.color} />
+              <Text style={primaryBtnText} className="font-bold text-lg">{t('add.stopHunger')}</Text>
+            </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => clearDraft()} className="border border-gray-300 dark:border-gray-600 rounded-xl py-4 items-center">
             <Text className="text-gray-600 dark:text-gray-400 font-semibold">{t('add.cancelSession')}</Text>

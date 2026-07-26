@@ -37,6 +37,7 @@
     "setDuration": "Ustaw czas",
     "inProgress": "Aktywny głód",
     "startHunger": "Rozpocznij",
+    "stopHunger": "Zatrzymaj",
     "focusIssues": "Problemy z koncentracją",
     "cancelSession": "Anuluj",
     "invalidDuration": "Podaj prawidłowy czas"

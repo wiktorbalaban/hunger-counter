@@ -37,6 +37,7 @@
     "setDuration": "Choisir la durée",
     "inProgress": "Faim en cours",
     "startHunger": "Démarrer",
+    "stopHunger": "Arrêter",
     "focusIssues": "Problèmes de concentration",
     "cancelSession": "Annuler",
     "invalidDuration": "Entrez une durée valide"
