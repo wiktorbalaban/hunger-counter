@@ -16,7 +16,8 @@
     "themeDefaultDescription": "Active le thème sombre si activé sur l'appareil.",
     "themeLight": "Clair",
     "themeDark": "Sombre",
-    "rateApp": "Évaluer {{name}}"
+    "rateApp": "Évaluer {{name}}",
+    "showWalkthrough": "Afficher le guide"
   },
   "crashReporting": {
     "title": "Aider à améliorer l'app",
@@ -62,5 +63,26 @@
     "concentrationProblems": "Problèmes de concentration",
     "selectDateTime": "Choisir date et heure",
     "now": "Maintenant"
+  },
+  "walkthrough": {
+    "next": "Suivant",
+    "gotIt": "Compris",
+    "skip": "Passer",
+    "modeToggle": {
+      "title": "Suivre ou ajouter",
+      "body": "Suivez la faim en temps réel, ou ajoutez un épisode déjà terminé."
+    },
+    "intensity": {
+      "title": "Évaluer l'intensité",
+      "body": "Indiquez éventuellement l'intensité de la faim — faible, modérée ou élevée."
+    },
+    "startButton": {
+      "title": "Commencer le suivi",
+      "body": "Appuyez ici pour démarrer une session de faim. Vous pourrez la terminer et l'enregistrer plus tard."
+    },
+    "tabOverview": {
+      "title": "Retrouvez votre historique",
+      "body": "Aujourd'hui affiche vos entrées, et Rapport présente vos tendances au fil du temps."
+    }
   }
 }

@@ -9,6 +9,7 @@ import { DateTimeInput } from '../components/DateTimeInput';
 import { DurationPickerModal } from '../components/DurationPickerModal';
 import { useTheme } from '../context/ThemeContext';
 import { ScreenContainer } from '../components/ScreenContainer';
+import { useWalkthroughTarget, WalkthroughTarget } from '../walkthrough/WalkthroughTarget';
 
 function formatElapsed(ms: number): string {
   const totalMins = Math.floor(ms / 60000);
@@ -37,6 +38,7 @@ export default function AddHungerScreen() {
 
   const [mode, setMode] = useState<'track' | 'log'>('track');
   const [now, setNow] = useState(new Date());
+  const { ref: modeToggleRef } = useWalkthroughTarget('add.modeToggle');
 
   useEffect(() => {
     if (!draft) return;
@@ -108,7 +110,7 @@ export default function AddHungerScreen() {
       <ScreenContainer>
 
       {/* Mode toggle */}
-      <View className="flex-row m-4 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800" style={{ elevation: 1 }}>
+      <View ref={modeToggleRef} collapsable={false} className="flex-row m-4 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800" style={{ elevation: 1 }}>
         {(['track', 'log'] as const).map(m => (
           <TouchableOpacity
             key={m} onPress={() => setMode(m)}
@@ -128,17 +130,21 @@ export default function AddHungerScreen() {
           <Card title={t('add.startTime')}>
             <DateTimeInput value={startTime} onChange={setStartTime} placeholder={t('common.selectDateTime')} />
           </Card>
-          <Card title={t('add.intensityOptional')}>
-            <IntensityPicker value={startIntensity} onChange={setStartIntensity} />
-          </Card>
+          <WalkthroughTarget targetKey="add.intensity">
+            <Card title={t('add.intensityOptional')}>
+              <IntensityPicker value={startIntensity} onChange={setStartIntensity} />
+            </Card>
+          </WalkthroughTarget>
           <Card title={t('add.focusIssues')}>
             <Row label={t('common.concentrationProblems')}>
               <Switch value={startConc} onValueChange={setStartConc} trackColor={{ true: theme.primary, false: theme.border }} thumbColor={theme.surface} />
             </Row>
           </Card>
-          <TouchableOpacity onPress={handleStart} className="rounded-xl py-4 items-center" style={{ elevation: 2, backgroundColor: theme.buttonSurface }}>
-            <Text style={primaryBtnText} className="font-bold text-base">{t('add.startHunger')}</Text>
-          </TouchableOpacity>
+          <WalkthroughTarget targetKey="add.startButton">
+            <TouchableOpacity onPress={handleStart} className="rounded-xl py-4 items-center" style={{ elevation: 2, backgroundColor: theme.buttonSurface }}>
+              <Text style={primaryBtnText} className="font-bold text-base">{t('add.startHunger')}</Text>
+            </TouchableOpacity>
+          </WalkthroughTarget>
         </View>
       )}
 

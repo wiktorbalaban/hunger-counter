@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Linking, Switch } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
+import { usePaneNavigation } from '../navigation/PaneContext';
 import { useTheme } from '../context/ThemeContext';
+import { useWalkthrough } from '../walkthrough/WalkthroughContext';
+import { WALKTHROUGH_STEPS } from '../walkthrough/steps';
 import { getConsent, setConsent } from '../services/sentry.service';
 import { requestReview } from '../services/rating.service';
 import { LanguageSetting } from '../components/LanguageSetting';
@@ -15,11 +18,19 @@ const PRIVACY_POLICY_URL = 'https://wiktorbalaban.github.io/hunger-counter/priva
 export default function MoreScreen() {
   const { theme } = useTheme();
   const { t } = useTranslation();
+  const navigation = usePaneNavigation();
+  const { run } = useWalkthrough();
   const [crashReporting, setCrashReporting] = useState(() => getConsent() === true);
 
   function handleCrashReportingToggle(value: boolean) {
     setCrashReporting(value);
     setConsent(value);
+  }
+
+  function handleShowWalkthrough() {
+    // Steps target the Add screen; switch there first, then replay all of them.
+    navigation.navigate('Add');
+    run(WALKTHROUGH_STEPS, { force: true });
   }
 
   return (
@@ -51,6 +62,18 @@ export default function MoreScreen() {
           <Ionicons name="star-outline" size={22} color={theme.primary} />
           <Text numberOfLines={1} className="flex-1 text-base text-gray-900 dark:text-gray-100">
             {t('more.rateApp', { name: t('tabs.add') })}
+          </Text>
+          <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={handleShowWalkthrough}
+          className="flex-row items-center border-b border-gray-100 dark:border-gray-700"
+          style={{ padding: 16, gap: 12 }}
+          activeOpacity={0.6}
+        >
+          <Ionicons name="help-circle-outline" size={22} color={theme.primary} />
+          <Text numberOfLines={1} className="flex-1 text-base text-gray-900 dark:text-gray-100">
+            {t('more.showWalkthrough')}
           </Text>
           <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
         </TouchableOpacity>

@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useHunger } from '../context/HungerContext';
 import { generateMockEntries } from '../utils/seedMockData';
+import { resetSeen } from '../services/walkthrough.service';
 
 export function DevTools() {
   const { addEntries, clearEntries } = useHunger();
@@ -70,6 +71,22 @@ export function DevTools() {
         >
           <Ionicons name="trash-outline" size={18} color="#92400e" />
           <Text style={{ color: '#92400e', fontWeight: '600' }}>Clear all entries</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={resetSeen}
+          activeOpacity={0.6}
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 8,
+            paddingVertical: 10,
+            paddingHorizontal: 12,
+            borderRadius: 8,
+            backgroundColor: '#fef3c7',
+          }}
+        >
+          <Ionicons name="refresh-outline" size={18} color="#92400e" />
+          <Text style={{ color: '#92400e', fontWeight: '600' }}>Reset walkthrough (relaunch)</Text>
         </TouchableOpacity>
       </View>
     </View>

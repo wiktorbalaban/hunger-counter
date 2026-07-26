@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../context/ThemeContext';
+import { useWalkthroughTarget } from '../walkthrough/WalkthroughTarget';
 import { Pane } from './Pane';
 import AddHungerScreen from '../screens/AddHungerScreen';
 import TodayScreen from '../screens/TodayScreen';
@@ -43,6 +44,7 @@ export default function TabNavigator() {
   const insets = useSafeAreaInsets();
   const [activeTab, setActiveTab] = useState<TabName>('Add');
   const tabHistoryRef = useRef<TabName[]>([]);
+  const { ref: tabBarRef } = useWalkthroughTarget('tabbar.root');
 
   const isLandscape = width > height;
   const panesCount = width >= TABLET_WIDTH && isLandscape ? 2 : 1;
@@ -93,6 +95,8 @@ export default function TabNavigator() {
       </View>
 
       <View
+        ref={tabBarRef}
+        collapsable={false}
         style={{
           flexDirection: 'row',
           borderTopWidth: 1,

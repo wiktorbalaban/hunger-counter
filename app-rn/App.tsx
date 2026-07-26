@@ -13,6 +13,8 @@ import { useTheme } from './src/context/ThemeContext';
 import { registerIconSyncTask } from './src/tasks/iconSyncTask';
 import TabNavigator from './src/navigation/TabNavigator';
 import CrashReportingConsentModal from './src/components/CrashReportingConsentModal';
+import { WalkthroughProvider } from './src/walkthrough/WalkthroughContext';
+import { WalkthroughOverlay } from './src/walkthrough/WalkthroughOverlay';
 import { initSentry, getConsent } from './src/services/sentry.service';
 import { markInstallDate } from './src/services/rating.service';
 
@@ -31,8 +33,11 @@ function AppContent() {
   return (
     <NavigationContainer>
       <StatusBar style="light" />
-      <TabNavigator />
-      <CrashReportingConsentModal visible={showConsent} onDismiss={() => setShowConsent(false)} />
+      <WalkthroughProvider enabled={!showConsent}>
+        <TabNavigator />
+        <CrashReportingConsentModal visible={showConsent} onDismiss={() => setShowConsent(false)} />
+        <WalkthroughOverlay />
+      </WalkthroughProvider>
     </NavigationContainer>
   );
 }

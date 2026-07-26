@@ -16,7 +16,8 @@
     "themeDefaultDescription": "Włącz ciemny motyw, gdy jest on włączony na urządzeniu.",
     "themeLight": "Jasny",
     "themeDark": "Ciemny",
-    "rateApp": "Oceń {{name}}"
+    "rateApp": "Oceń {{name}}",
+    "showWalkthrough": "Pokaż samouczek"
   },
   "crashReporting": {
     "title": "Pomóż ulepszyć aplikację",
@@ -62,5 +63,26 @@
     "concentrationProblems": "Problemy z koncentracją",
     "selectDateTime": "Wybierz datę i godzinę",
     "now": "Teraz"
+  },
+  "walkthrough": {
+    "next": "Dalej",
+    "gotIt": "Rozumiem",
+    "skip": "Pomiń",
+    "modeToggle": {
+      "title": "Śledź lub dodaj",
+      "body": "Śledź głód na bieżąco lub dodaj epizod, który już się zakończył."
+    },
+    "intensity": {
+      "title": "Określ intensywność",
+      "body": "Opcjonalnie zaznacz, jak silny jest głód — niski, średni lub wysoki."
+    },
+    "startButton": {
+      "title": "Rozpocznij śledzenie",
+      "body": "Naciśnij, aby rozpocząć sesję głodu. Możesz ją zakończyć i zapisać później."
+    },
+    "tabOverview": {
+      "title": "Znajdź swoją historię",
+      "body": "Dziś pokazuje Twoje wpisy, a Raport przedstawia trendy w czasie."
+    }
   }
 }

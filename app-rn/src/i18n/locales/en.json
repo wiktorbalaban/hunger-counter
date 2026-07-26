@@ -16,7 +16,8 @@
     "themeDefaultDescription": "Enable dark theme when enabled on the device.",
     "themeLight": "Light",
     "themeDark": "Dark",
-    "rateApp": "Rate {{name}}"
+    "rateApp": "Rate {{name}}",
+    "showWalkthrough": "Show walkthrough"
   },
   "crashReporting": {
     "title": "Help improve the app",
@@ -62,5 +63,26 @@
     "concentrationProblems": "Concentration problems",
     "selectDateTime": "Select date & time",
     "now": "Now"
+  },
+  "walkthrough": {
+    "next": "Next",
+    "gotIt": "Got it",
+    "skip": "Skip",
+    "modeToggle": {
+      "title": "Track or log",
+      "body": "Track hunger as it happens, or log an episode that already ended."
+    },
+    "intensity": {
+      "title": "Rate the intensity",
+      "body": "Optionally mark how strong the hunger feels — low, medium, or high."
+    },
+    "startButton": {
+      "title": "Start tracking",
+      "body": "Tap here to begin a hunger session. You can end and save it later."
+    },
+    "tabOverview": {
+      "title": "Find your history",
+      "body": "Today lists what you logged, and Report charts your trends over time."
+    }
   }
 }

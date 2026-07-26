@@ -16,7 +16,8 @@
     "themeDefaultDescription": "Dunkles Design aktivieren, wenn auf dem Gerät aktiviert.",
     "themeLight": "Hell",
     "themeDark": "Dunkel",
-    "rateApp": "{{name}} bewerten"
+    "rateApp": "{{name}} bewerten",
+    "showWalkthrough": "Rundgang anzeigen"
   },
   "crashReporting": {
     "title": "Hilf, die App zu verbessern",
@@ -62,5 +63,26 @@
     "concentrationProblems": "Konzentrationsprobleme",
     "selectDateTime": "Datum & Uhrzeit wählen",
     "now": "Jetzt"
+  },
+  "walkthrough": {
+    "next": "Weiter",
+    "gotIt": "Verstanden",
+    "skip": "Überspringen",
+    "modeToggle": {
+      "title": "Verfolgen oder eintragen",
+      "body": "Verfolge Hunger in Echtzeit oder trage eine bereits beendete Episode nach."
+    },
+    "intensity": {
+      "title": "Intensität bewerten",
+      "body": "Markiere optional, wie stark der Hunger ist — niedrig, mittel oder hoch."
+    },
+    "startButton": {
+      "title": "Verfolgung starten",
+      "body": "Tippe hier, um eine Hunger-Sitzung zu starten. Du kannst sie später beenden und speichern."
+    },
+    "tabOverview": {
+      "title": "Deinen Verlauf finden",
+      "body": "Heute zeigt deine Einträge, und Bericht stellt deine Trends im Zeitverlauf dar."
+    }
   }
 }
