@@ -346,7 +346,7 @@ Without Metro running the app will crash with "unable to load script".
 - Day labels use `toLocaleDateString(undefined, { day: '2-digit', month: '2-digit' })` — locale-aware DD/MM (or MM/DD, DD.MM, etc. depending on device language)
 - Chart sizing uses `useWindowDimensions()` (not `Dimensions.get()`) so it updates on rotation; chart height has a minimum of 350px
 - Log past mode: if no start time selected, defaults to current time on save
-- Track-now start screen only records the **start time**; intensity + focus issues are set on the in-progress (draft) screen, so hunger details live in one place. Start button = `play` icon + one-shot attention pulse on screen focus (suppressed while a walkthrough step is active); the in-progress Stop button = `stop` icon.
+- Track-now start screen only records the **start time**; intensity + focus issues are set on the in-progress (draft) screen, so hunger details live in one place. Start button = `play` icon; the in-progress Stop button = `stop` icon.
 - The start screen shows a "Today summary" card (session count + total duration) between the mode toggle and the start-time field.
 - Terminology: user-facing English uses "Focus issues" everywhere; the `HungerEntry.concentrationProblems` field name is internal (not user-visible) and kept as-is. pl/de/fr use their single natural "concentration" term.
 - Screens use the custom navigation hooks from [PaneContext](app-rn/src/navigation/PaneContext.tsx), NOT `@react-navigation/native` — see "Navigation" section above
