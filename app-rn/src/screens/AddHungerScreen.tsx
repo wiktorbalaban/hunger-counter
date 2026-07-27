@@ -46,6 +46,9 @@ export default function AddHungerScreen() {
 
   useEffect(() => {
     if (!draft) return;
+    // Refresh immediately: `now` is otherwise the (stale) mount time until the
+    // first 30s tick, which can sit just before startTime and show negative elapsed.
+    setNow(new Date());
     const id = setInterval(() => {
       const tick = new Date();
       setNow(tick);
@@ -190,7 +193,7 @@ export default function AddHungerScreen() {
           <View className="bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/60 rounded-xl p-4 flex-row items-center justify-between">
             <Text className="font-bold text-amber-900 dark:text-amber-200 text-base">{t('add.inProgress')}</Text>
             <Text className="text-amber-800 dark:text-amber-300 font-semibold text-2xl">
-              {draft?.startTime ? formatElapsed(now.getTime() - new Date(draft.startTime).getTime()) : '—'}
+              {draft?.startTime ? formatElapsed(Math.max(0, now.getTime() - new Date(draft.startTime).getTime())) : '—'}
             </Text>
           </View>
           <Card title={t('add.endTime')}>
