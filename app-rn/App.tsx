@@ -15,7 +15,7 @@ import TabNavigator from './src/navigation/TabNavigator';
 import CrashReportingConsentModal from './src/components/CrashReportingConsentModal';
 import { WalkthroughProvider } from './src/walkthrough/WalkthroughContext';
 import { WalkthroughOverlay } from './src/walkthrough/WalkthroughOverlay';
-import { initSentry, getConsent } from './src/services/sentry.service';
+import { initSentry } from './src/services/sentry.service';
 import { markInstallDate } from './src/services/rating.service';
 
 initSentry();
@@ -23,7 +23,10 @@ markInstallDate();
 
 function AppContent() {
   useAppIconSync();
-  const [showConsent, setShowConsent] = useState(() => getConsent() === undefined);
+  // Consent popup temporarily disabled — don't prompt on first launch.
+  // The More-tab toggle still lets users opt into sending statistics.
+  // To re-enable, restore: useState(() => getConsent() === undefined)
+  const [showConsent, setShowConsent] = useState(false);
   const { isDark } = useTheme();
 
   useEffect(() => {
