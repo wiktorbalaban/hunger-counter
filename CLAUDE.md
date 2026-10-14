@@ -13,6 +13,7 @@ React Native + Expo mobile app for tracking hunger episodes. Builds to Android A
 - NOTE: `react-native-gifted-charts`, `react-native-linear-gradient`, and `react-native-reanimated` appear in `package.json` but are NOT imported anywhere in `src/` (the walkthrough uses the RN `Animated` API, not reanimated). reanimated is kept because it's a transitive dependency of Expo/RN libs and is version-managed by `expo install --fix`; the other two are unused leftovers and could be removed.
 - @quidone/react-native-wheel-picker for duration selection
 - @sentry/react-native for opt-in crash reporting
+- expo-system-ui — sets the root view background to match the theme (see dark-mode / edge-to-edge notes); also makes `userInterfaceStyle` take effect natively on Android
 - i18next + react-i18next for translations (en, pl, de, fr — loaded dynamically via `require.context`)
 
 ## Project layout
@@ -23,11 +24,15 @@ app-rn/
     models/               HungerEntry, Intensity
     services/
       hunger.service.ts     MMKV storage (synchronous)
+      goal.service.ts       MMKV daily-goal band (min/max minutes) in `goal-storage`
       sentry.service.ts     Sentry init + opt-in consent stored in MMKV
+      rating.service.ts     in-app review gating + request (expo-store-review) in `rating-storage`
       walkthrough.service.ts  MMKV set of seen walkthrough step ids (getSeenIds/markSeen/resetSeen)
-    context/              HungerContext.tsx — app-wide state, ThemeContext.tsx — theme + dark mode
+    context/              HungerContext.tsx — app-wide state, ThemeContext.tsx — theme + dark mode, GoalContext.tsx — daily goal (useGoal)
     components/
       IntensityPicker.tsx          Low/Medium/High segmented control
+      GoalGauge.tsx                gauge showing today's total vs the goal band
+      GoalSetting.tsx              settings row + slider to edit the goal band (used in More)
       DateTimeInput.tsx            native date+time picker (Android dialog flow)
       AnimatedDot.tsx              twinkling dot for the focus-issues indicator
       DurationPickerModal.tsx      wheel picker for duration (uses @quidone/react-native-wheel-picker)
@@ -38,7 +43,7 @@ app-rn/
       AddHungerScreen.tsx   Tab 1 — Track now (start screen + Today summary / in-progress) + Log past
       TodayScreen.tsx       Tab 2 — Today's entries
       ReportScreen.tsx      Tab 3 — Horizontal stacked bar chart (last 10 days)
-      MoreScreen.tsx        Tab 4 — Language, crash reporting, privacy policy
+      MoreScreen.tsx        Tab 4 — Daily goal, language, crash reporting, privacy policy
     navigation/
       TabNavigator.tsx      custom multi-pane navigator + bottom tab bar
       Pane.tsx              single pane wrapper with local header
@@ -51,6 +56,7 @@ app-rn/
       iconSyncTask.ts       background task — resets icon after 3am
     utils/
       entry.ts              shared helpers (isTodayEntry)
+      goal.ts               goalStatus() + formatGoalDuration/formatGoalRange
     walkthrough/
       steps.ts              ordered tour steps (id, targetKey, title/body keys, placement?, interactive?)
       WalkthroughContext.tsx  provider — target registry + controller (run/next/prev/skip) + auto-run + Android back
@@ -244,6 +250,25 @@ Current sequence: mode toggle → **Start (interactive)** → intensity → focu
 2. Add `walkthrough.<...>` title/body keys to all four locale files.
 3. Register the target where it renders via `useWalkthroughTarget` / `<WalkthroughTarget>`. If it's on the in-progress screen, include the id in `tourDraftStep`.
 
+## Daily goal
+
+Users set a **daily hunger goal as a min–max band** (both values in minutes) and the app shows how today's total sits relative to it.
+
+### Model + storage
+- `DailyGoal { min: number; max: number }` (minutes), default `{ min: 60, max: 120 }` — see [goal.service.ts](app-rn/src/services/goal.service.ts).
+- Persisted as JSON in its own MMKV instance (`createMMKV({ id: 'goal-storage' })`) under `daily_goal`.
+- `clampGoal()` enforces bounds on every read/write: rounded, within `GOAL_SCALE_MIN`..`GOAL_SCALE_MAX` (0–300 min / 5h, step `GOAL_STEP` = 15), and `min <= max` (an inverted band collapses `max` up to `min`). The 300-min ceiling matches `DurationPickerModal`'s `MAX_MINS`.
+
+### State
+- [GoalContext.tsx](app-rn/src/context/GoalContext.tsx) — `GoalProvider` (wrapped in `App.tsx` under `HungerProvider`) exposes `useGoal() → { goal, setGoal }`. `setGoal` persists then re-reads so state reflects the clamped value.
+
+### Status + formatting
+- [utils/goal.ts](app-rn/src/utils/goal.ts) — `goalStatus(totalMinutes, goal)` returns `'under' | 'onTarget' | 'over'`; `formatGoalDuration(mins)` → `"1h 30m"`/`"45m"`/`"2h"`/`"0m"`; `formatGoalRange(goal)` → `"1h – 2h"`.
+
+### UI
+- `GoalGauge` — gauge of today's total vs the band; rendered on `AddHungerScreen`, `TodayScreen`, and `ReportScreen`.
+- `GoalSetting` — the editable band control (slider) shown in the **More** tab.
+
 ## Internationalization
 
 Supported locales: en, pl, de, fr.
@@ -285,6 +310,22 @@ Hard-coded to crash-only mode — no breadcrumbs from HTTP/console, no performan
 
 The Expo plugin entry in `app.json` has `organization` and `project` set so EAS builds know where to upload (not currently used; local builds use `sentry.properties`).
 
+## App rating (in-app review)
+
+Prompts engaged users for a Play Store rating via the native in-app review dialog ([rating.service.ts](app-rn/src/services/rating.service.ts), `expo-store-review`). State lives in its own MMKV instance (`rating-storage`).
+
+### Flow
+- `App.tsx` calls `markInstallDate()` at module load (before the React tree). It records the install timestamp **per app version** (`installed_version` / `version_install_date`) and clears the "already asked" flag whenever the version changes — so each release can prompt once.
+- `ReportScreen` runs a `useEffect` keyed on `entries` — so when the Report screen mounts (opening the tab) or entries change, it calls `shouldRequestReview(entries)` and, if it passes, `requestReview()`. The **More** tab also has a manual "rate" row that calls `requestReview()` directly.
+
+### Gating (`shouldRequestReview`) — all must hold
+- ≥ `REQUIRED_DAYS` (7) days since install of the current version.
+- ≥ `REQUIRED_UNIQUE_DAYS_WITH_ENTRIES` (3) distinct calendar days that have entries.
+- Not already asked for the current version (`asked_for_version`).
+
+### Request (`requestReview`)
+Marks `asked_for_version` first, then tries `StoreReview.requestReview()` (native in-app review). On unavailable/error it falls back to `openStorePage()` — `market://details?id=<pkg>`, then the `https://play.google.com/...` web URL. Package + version come from `Constants.expoConfig`.
+
 ## GitHub Pages (`docs/`)
 
 Served from the `docs/` directory on the `main` branch.
@@ -316,7 +357,7 @@ cd android && ./gradlew assembleDebug
 
 Output: `android/app/build/outputs/apk/debug/app-debug.apk`
 
-Requires: JDK 21, Android Studio with SDK API 34+.
+Requires: JDK 21, Android Studio with SDK API 36+ (Expo SDK 55 builds against `compileSdk 36`).
 
 ### Running debug APK on a device
 
@@ -328,6 +369,14 @@ cd app-rn && npx expo start     # start Metro
 ```
 
 Without Metro running the app will crash with "unable to load script".
+
+### Emulator GPU instability on API 37 / Android 17 images
+
+The app **runs fine on Android 17** (verified on an API 37 emulator) — but the API 37/Android 17 system image itself is GPU-unstable on Linux + NVIDIA. Symptoms: `adb install` fails and the emulator vanishes mid-boot/launch; the emulator log shows `Guest Angle is still unstable for API > 35` followed by `DisplaySurfaceGlContextHelper context was preempted` / `glGetString: error null ctx`. This is a host-side emulator graphics bug, **not** an app or build problem.
+
+Workarounds:
+- Launch the AVD with software rendering: `emulator -avd <name> -gpu swiftshader_indirect -no-snapshot` (stable, slower), or try `-gpu angle_indirect` / `-gpu host`.
+- Prefer a mature **API 35 (Android 15)** or **API 36 (Android 16)** AVD for day-to-day dev — the app's `minSdk 24`/`targetSdk 36` runs identically there.
 
 ## Future: Expo EAS Build (cloud CI)
 
