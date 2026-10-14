@@ -6,6 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import * as NavigationBar from 'expo-navigation-bar';
+import * as SystemUI from 'expo-system-ui';
 import { HungerProvider } from './src/context/HungerContext';
 import { ThemeProvider } from './src/context/ThemeContext';
 import { GoalProvider } from './src/context/GoalContext';
@@ -28,11 +29,14 @@ function AppContent() {
   // The More-tab toggle still lets users opt into sending statistics.
   // To re-enable, restore: useState(() => getConsent() === undefined)
   const [showConsent, setShowConsent] = useState(false);
-  const { isDark } = useTheme();
+  const { isDark, theme } = useTheme();
 
   useEffect(() => {
     NavigationBar.setButtonStyleAsync(isDark ? 'light' : 'dark');
-  }, [isDark]);
+    // Keep the root view background (behind the React tree) in sync with the
+    // theme so transitions / load / edge-to-edge insets don't flash white.
+    SystemUI.setBackgroundColorAsync(theme.background);
+  }, [isDark, theme.background]);
 
   return (
     <NavigationContainer>
