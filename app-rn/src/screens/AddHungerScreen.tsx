@@ -9,6 +9,8 @@ import { IntensityPicker } from '../components/IntensityPicker';
 import { DateTimeInput } from '../components/DateTimeInput';
 import { DurationPickerModal } from '../components/DurationPickerModal';
 import { useTheme } from '../context/ThemeContext';
+import { useGoal } from '../context/GoalContext';
+import { GoalGauge } from '../components/GoalGauge';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { isTodayEntry } from '../utils/entry';
 import { useWalkthroughTarget, WalkthroughTarget } from '../walkthrough/WalkthroughTarget';
@@ -36,6 +38,7 @@ export default function AddHungerScreen() {
   const navigation = usePaneNavigation();
   const { draft, entries, addEntry, saveDraft, clearDraft } = useHunger();
   const { theme, isDark } = useTheme();
+  const { goal } = useGoal();
   const { t } = useTranslation();
   const primaryBtnText = { color: isDark ? theme.primary : theme.onPrimary };
 
@@ -106,6 +109,10 @@ export default function AddHungerScreen() {
   // Today's totals — shown as a summary on the start screen so it doesn't feel empty.
   const todayEntries = entries.filter(isTodayEntry);
   const todayMinutes = todayEntries.reduce((sum, e) => sum + e.durationMinutes, 0);
+  // Completed today + the running session, for the in-progress goal gauge.
+  const liveTotal =
+    todayMinutes +
+    (draft?.startTime ? Math.max(0, Math.round((now.getTime() - new Date(draft.startTime).getTime()) / 60000)) : 0);
 
   const handleSaveTracked = () => {
     if (!draft?.startTime) return;
@@ -196,6 +203,11 @@ export default function AddHungerScreen() {
               {draft?.startTime ? formatElapsed(Math.max(0, now.getTime() - new Date(draft.startTime).getTime())) : '—'}
             </Text>
           </View>
+          {draft && (
+            <View className="bg-white dark:bg-gray-800 rounded-xl items-center" style={{ padding: 16, elevation: 1 }}>
+              <GoalGauge totalMinutes={liveTotal} goal={goal} caption={t('goal.todayLabel')} />
+            </View>
+          )}
           <Card title={t('add.endTime')}>
             <DateTimeInput value={endTime} onChange={setEndTime} placeholder={t('common.selectDateTime')} />
           </Card>

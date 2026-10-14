@@ -8,6 +8,7 @@ import { StatusBar } from 'expo-status-bar';
 import * as NavigationBar from 'expo-navigation-bar';
 import { HungerProvider } from './src/context/HungerContext';
 import { ThemeProvider } from './src/context/ThemeContext';
+import { GoalProvider } from './src/context/GoalContext';
 import { useAppIconSync } from './src/hooks/useAppIconSync';
 import { useTheme } from './src/context/ThemeContext';
 import { registerIconSyncTask } from './src/tasks/iconSyncTask';
@@ -57,7 +58,9 @@ export default function App() {
     <SafeAreaProvider>
       <ThemeProvider>
         <HungerProvider>
-          <AppContent />
+          <GoalProvider>
+            <AppContent />
+          </GoalProvider>
         </HungerProvider>
       </ThemeProvider>
     </SafeAreaProvider>

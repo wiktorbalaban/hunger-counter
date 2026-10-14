@@ -17,7 +17,8 @@
     "themeLight": "Clair",
     "themeDark": "Sombre",
     "rateApp": "Évaluer {{name}}",
-    "showWalkthrough": "Afficher le guide"
+    "showWalkthrough": "Afficher le guide",
+    "dailyGoal": "Objectif quotidien"
   },
   "crashReporting": {
     "title": "Aider à améliorer l'app",
@@ -54,7 +55,15 @@
     "title": "Faim par jour",
     "subtitle": "{{count}} derniers jours",
     "focusIssues": "Problèmes de concentration",
+    "goal": "Objectif",
     "empty": "Aucune donnée à afficher.\nEnregistrez la faim pour voir le rapport."
+  },
+  "goal": {
+    "title": "Objectif de faim quotidien",
+    "todayLabel": "Faim du jour",
+    "under": "Sous l'objectif",
+    "onTarget": "Dans l'objectif",
+    "over": "Au-dessus"
   },
   "intensity": {
     "low": "Faible",

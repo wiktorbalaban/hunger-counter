@@ -17,7 +17,8 @@
     "themeLight": "Jasny",
     "themeDark": "Ciemny",
     "rateApp": "Oceń {{name}}",
-    "showWalkthrough": "Pokaż samouczek"
+    "showWalkthrough": "Pokaż samouczek",
+    "dailyGoal": "Cel dzienny"
   },
   "crashReporting": {
     "title": "Pomóż ulepszyć aplikację",
@@ -54,7 +55,15 @@
     "title": "Głód na dzień",
     "subtitle": "Ostatnie {{count}} dni",
     "focusIssues": "Problemy z koncentracją",
+    "goal": "Cel",
     "empty": "Brak danych do wyświetlenia.\nZapisz głód, aby zobaczyć raport."
+  },
+  "goal": {
+    "title": "Dzienny cel głodu",
+    "todayLabel": "Dzisiejszy głód",
+    "under": "Poniżej celu",
+    "onTarget": "W celu",
+    "over": "Powyżej celu"
   },
   "intensity": {
     "low": "Niski",

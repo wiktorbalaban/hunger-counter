@@ -10,6 +10,7 @@ import { getConsent, setConsent } from '../services/sentry.service';
 import { requestReview } from '../services/rating.service';
 import { LanguageSetting } from '../components/LanguageSetting';
 import { ThemeSetting } from '../components/ThemeSetting';
+import { GoalSetting } from '../components/GoalSetting';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { DevTools } from '../components/DevTools';
 
@@ -41,6 +42,7 @@ export default function MoreScreen() {
       <View className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden" style={{ elevation: 1 }}>
         <LanguageSetting />
         <ThemeSetting />
+        <GoalSetting />
         <View className="flex-row items-center border-b border-gray-100 dark:border-gray-700" style={{ padding: 16, gap: 12 }}>
           <Ionicons name="bug-outline" size={22} color={theme.primary} />
           <Text numberOfLines={1} className="flex-1 text-base text-gray-900 dark:text-gray-100">

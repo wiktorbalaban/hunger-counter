@@ -17,7 +17,8 @@
     "themeLight": "Hell",
     "themeDark": "Dunkel",
     "rateApp": "{{name}} bewerten",
-    "showWalkthrough": "Rundgang anzeigen"
+    "showWalkthrough": "Rundgang anzeigen",
+    "dailyGoal": "Tagesziel"
   },
   "crashReporting": {
     "title": "Hilf, die App zu verbessern",
@@ -54,7 +55,15 @@
     "title": "Hunger pro Tag",
     "subtitle": "Letzte {{count}} Tage",
     "focusIssues": "Konzentrationsprobleme",
+    "goal": "Ziel",
     "empty": "Noch keine Daten.\nErfasse Hunger, um den Bericht zu sehen."
+  },
+  "goal": {
+    "title": "Tägliches Hungerziel",
+    "todayLabel": "Heutiger Hunger",
+    "under": "Unter Ziel",
+    "onTarget": "Im Ziel",
+    "over": "Über Ziel"
   },
   "intensity": {
     "low": "Niedrig",

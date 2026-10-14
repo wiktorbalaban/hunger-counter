@@ -17,7 +17,8 @@
     "themeLight": "Light",
     "themeDark": "Dark",
     "rateApp": "Rate {{name}}",
-    "showWalkthrough": "Show walkthrough"
+    "showWalkthrough": "Show walkthrough",
+    "dailyGoal": "Daily goal"
   },
   "crashReporting": {
     "title": "Help improve the app",
@@ -54,7 +55,15 @@
     "title": "Hunger per day",
     "subtitle": "Last {{count}} days",
     "focusIssues": "Focus issues",
+    "goal": "Goal",
     "empty": "No data to show yet.\nLog hunger to see your report."
+  },
+  "goal": {
+    "title": "Daily hunger goal",
+    "todayLabel": "Today's hunger",
+    "under": "Below goal",
+    "onTarget": "On target",
+    "over": "Above goal"
   },
   "intensity": {
     "low": "Low",

@@ -5,10 +5,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { useHunger } from '../context/HungerContext';
 import { useTheme } from '../context/ThemeContext';
+import { useGoal } from '../context/GoalContext';
 import { AnimatedDot } from '../components/AnimatedDot';
 import { Intensity } from '../models/hunger-entry.model';
 import { isTodayEntry } from '../utils/entry';
 import { ScreenContainer } from '../components/ScreenContainer';
+import { GoalGauge } from '../components/GoalGauge';
 
 function formatDuration(mins: number): string {
   const h = Math.floor(mins / 60);
@@ -21,6 +23,7 @@ function formatDuration(mins: number): string {
 export default function TodayScreen() {
   const { entries } = useHunger();
   const { theme } = useTheme();
+  const { goal } = useGoal();
   const { t } = useTranslation();
   const navigation = usePaneNavigation();
   const todayEntries = entries.filter(isTodayEntry);
@@ -37,19 +40,19 @@ export default function TodayScreen() {
     navigation.setOptions({ title: `${t('tabs.today')}${suffix}` });
   }, [totalMins, t]);
 
-  if (todayEntries.length === 0) {
-    return (
-      <View className="flex-1 items-center justify-center bg-gray-50 dark:bg-gray-900" style={{ gap: 12 }}>
-        <Ionicons name="restaurant-outline" size={64} color={theme.textMuted} />
-        <Text className="text-base text-center text-gray-400 dark:text-gray-500">{t('today.empty')}</Text>
-      </View>
-    );
-  }
-
   return (
     <ScrollView className="flex-1 bg-gray-50 dark:bg-gray-900">
       <ScreenContainer>
         <View style={{ padding: 16, gap: 12 }}>
+      <View className="bg-white dark:bg-gray-800 rounded-xl items-center" style={{ padding: 16, elevation: 2 }}>
+        <GoalGauge totalMinutes={totalMins} goal={goal} caption={t('goal.todayLabel')} />
+      </View>
+      {todayEntries.length === 0 && (
+        <View className="items-center justify-center" style={{ paddingVertical: 32, gap: 12 }}>
+          <Ionicons name="restaurant-outline" size={64} color={theme.textMuted} />
+          <Text className="text-base text-center text-gray-400 dark:text-gray-500">{t('today.empty')}</Text>
+        </View>
+      )}
       {todayEntries.map(entry => {
         const color = intensityColor[entry.intensity];
         return (
