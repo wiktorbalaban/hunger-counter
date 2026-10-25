@@ -49,6 +49,7 @@
   },
   "today": {
     "empty": "Heute keine Einträge.\nTippe auf Hinzufügen.",
+    "emptyDay": "Keine Einträge an diesem Tag.",
     "focusIssues": "Konzentrationsprobleme"
   },
   "report": {

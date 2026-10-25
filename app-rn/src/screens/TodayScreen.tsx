@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ScrollView, View, Text } from 'react-native';
-import { usePaneNavigation } from '../navigation/PaneContext';
+import { usePaneNavigation, usePaneFocusEffect } from '../navigation/PaneContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { useHunger } from '../context/HungerContext';
@@ -8,8 +8,9 @@ import { useTheme } from '../context/ThemeContext';
 import { useGoal } from '../context/GoalContext';
 import { AnimatedDot } from '../components/AnimatedDot';
 import { Intensity } from '../models/hunger-entry.model';
-import { isTodayEntry } from '../utils/entry';
+import { isEntryOnDate, isSameDay } from '../utils/entry';
 import { ScreenContainer } from '../components/ScreenContainer';
+import { DateNavBar } from '../components/DateNavBar';
 import { GoalGauge } from '../components/GoalGauge';
 
 function formatDuration(mins: number): string {
@@ -20,14 +21,32 @@ function formatDuration(mins: number): string {
   return `${h}h ${m}m`;
 }
 
+function startOfToday(): Date {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
 export default function TodayScreen() {
   const { entries } = useHunger();
   const { theme } = useTheme();
   const { goal } = useGoal();
   const { t } = useTranslation();
   const navigation = usePaneNavigation();
-  const todayEntries = entries.filter(isTodayEntry);
-  const totalMins = todayEntries.reduce((s, e) => s + e.durationMinutes, 0);
+
+  const [selectedDate, setSelectedDate] = useState<Date>(startOfToday);
+
+  const isToday = isSameDay(selectedDate, new Date());
+  const dayEntries = entries.filter(e => isEntryOnDate(e, selectedDate));
+  const totalMins = dayEntries.reduce((s, e) => s + e.durationMinutes, 0);
+
+  const shortDate = selectedDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+
+  // Reset to today whenever the pane regains focus.
+  const resetToToday = useCallback(() => {
+    setSelectedDate(startOfToday());
+  }, []);
+  usePaneFocusEffect(resetToToday);
 
   const intensityColor: Record<Intensity, string> = {
     low:    theme.lowHunger,
@@ -37,50 +56,61 @@ export default function TodayScreen() {
 
   useEffect(() => {
     const suffix = totalMins > 0 ? `: ${formatDuration(totalMins)}` : '';
-    navigation.setOptions({ title: `${t('tabs.today')}${suffix}` });
-  }, [totalMins, t]);
+    const base = isToday ? t('tabs.today') : shortDate;
+    navigation.setOptions({ title: `${base}${suffix}` });
+  }, [totalMins, t, isToday, shortDate]);
 
   return (
-    <ScrollView className="flex-1 bg-gray-50 dark:bg-gray-900">
-      <ScreenContainer>
-        <View style={{ padding: 16, gap: 12 }}>
-      <View className="bg-white dark:bg-gray-800 rounded-xl items-center" style={{ padding: 16, elevation: 2 }}>
-        <GoalGauge totalMinutes={totalMins} goal={goal} caption={t('goal.todayLabel')} />
-      </View>
-      {todayEntries.length === 0 && (
-        <View className="items-center justify-center" style={{ paddingVertical: 32, gap: 12 }}>
-          <Ionicons name="restaurant-outline" size={64} color={theme.textMuted} />
-          <Text className="text-base text-center text-gray-400 dark:text-gray-500">{t('today.empty')}</Text>
-        </View>
-      )}
-      {todayEntries.map(entry => {
-        const color = intensityColor[entry.intensity];
-        return (
-          <View key={entry.id} className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden" style={{ elevation: 2 }}>
-            <View style={{ height: 4, backgroundColor: color }} />
-            <View style={{ padding: 16, gap: 12 }}>
-              <View className="flex-row items-center justify-between">
-                <Text style={{ color }} className="font-bold text-base">{t(`intensity.${entry.intensity}`)}</Text>
-                <Text className="text-sm text-gray-400 dark:text-gray-500">
-                  {new Date(entry.startTime).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}
+    <View className="flex-1 bg-gray-50 dark:bg-gray-900">
+      <ScrollView className="flex-1">
+        <ScreenContainer>
+          <View style={{ padding: 16, gap: 12 }}>
+            <View className="bg-white dark:bg-gray-800 rounded-xl items-center" style={{ padding: 16, elevation: 2 }}>
+              <GoalGauge
+                totalMinutes={totalMins}
+                goal={goal}
+                caption={isToday ? t('goal.todayLabel') : shortDate}
+              />
+            </View>
+            {dayEntries.length === 0 && (
+              <View className="items-center justify-center" style={{ paddingVertical: 32, gap: 12 }}>
+                <Ionicons name="restaurant-outline" size={64} color={theme.textMuted} />
+                <Text className="text-base text-center text-gray-400 dark:text-gray-500">
+                  {isToday ? t('today.empty') : t('today.emptyDay')}
                 </Text>
               </View>
-              <View className="flex-row gap-2 flex-wrap">
-                <Chip icon="time-outline" label={formatDuration(entry.durationMinutes)} primaryColor={theme.primary} />
-                {entry.concentrationProblems && (
-                  <View style={{ backgroundColor: theme.conc }} className="flex-row items-center gap-1 px-3 py-1 rounded-full">
-                    <AnimatedDot size={6} color={theme.white} />
-                    <Text className="text-white text-xs font-medium">{t('today.focusIssues')}</Text>
+            )}
+            {dayEntries.map(entry => {
+              const color = intensityColor[entry.intensity];
+              return (
+                <View key={entry.id} className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden" style={{ elevation: 2 }}>
+                  <View style={{ height: 4, backgroundColor: color }} />
+                  <View style={{ padding: 16, gap: 12 }}>
+                    <View className="flex-row items-center justify-between">
+                      <Text style={{ color }} className="font-bold text-base">{t(`intensity.${entry.intensity}`)}</Text>
+                      <Text className="text-sm text-gray-400 dark:text-gray-500">
+                        {new Date(entry.startTime).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}
+                      </Text>
+                    </View>
+                    <View className="flex-row gap-2 flex-wrap">
+                      <Chip icon="time-outline" label={formatDuration(entry.durationMinutes)} primaryColor={theme.primary} />
+                      {entry.concentrationProblems && (
+                        <View style={{ backgroundColor: theme.conc }} className="flex-row items-center gap-1 px-3 py-1 rounded-full">
+                          <AnimatedDot size={6} color={theme.white} />
+                          <Text className="text-white text-xs font-medium">{t('today.focusIssues')}</Text>
+                        </View>
+                      )}
+                    </View>
                   </View>
-                )}
-              </View>
-            </View>
+                </View>
+              );
+            })}
           </View>
-        );
-      })}
-        </View>
-      </ScreenContainer>
-    </ScrollView>
+        </ScreenContainer>
+      </ScrollView>
+
+      <DateNavBar date={selectedDate} onChange={setSelectedDate} maxDateLabel={t('tabs.today')} />
+    </View>
   );
 }
 

@@ -49,6 +49,7 @@
   },
   "today": {
     "empty": "Aucune entrée aujourd'hui.\nAppuyez sur Ajouter.",
+    "emptyDay": "Aucune entrée ce jour-là.",
     "focusIssues": "Problèmes de concentration"
   },
   "report": {

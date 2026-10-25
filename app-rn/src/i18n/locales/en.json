@@ -49,6 +49,7 @@
   },
   "today": {
     "empty": "No hunger entries today.\nTap Add to record one.",
+    "emptyDay": "No hunger entries on this day.",
     "focusIssues": "Focus issues"
   },
   "report": {

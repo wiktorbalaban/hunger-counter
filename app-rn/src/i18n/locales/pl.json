@@ -49,6 +49,7 @@
   },
   "today": {
     "empty": "Brak wpisów na dziś.\nNaciśnij Dodaj, by dodać wpis.",
+    "emptyDay": "Brak wpisów w tym dniu.",
     "focusIssues": "Problemy z koncentracją"
   },
   "report": {

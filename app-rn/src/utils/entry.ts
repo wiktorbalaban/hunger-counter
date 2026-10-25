@@ -1,11 +1,17 @@
 import { HungerEntry } from '../models/hunger-entry.model';
 
-export function isTodayEntry(entry: HungerEntry): boolean {
-  const now = new Date();
-  const d = new Date(entry.startTime);
+export function isSameDay(a: Date, b: Date): boolean {
   return (
-    d.getFullYear() === now.getFullYear() &&
-    d.getMonth() === now.getMonth() &&
-    d.getDate() === now.getDate()
+    a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() &&
+    a.getDate() === b.getDate()
   );
+}
+
+export function isEntryOnDate(entry: HungerEntry, date: Date): boolean {
+  return isSameDay(new Date(entry.startTime), date);
+}
+
+export function isTodayEntry(entry: HungerEntry): boolean {
+  return isEntryOnDate(entry, new Date());
 }
