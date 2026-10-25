@@ -23,7 +23,7 @@ app-rn/
   src/
     models/               HungerEntry, Intensity
     services/
-      hunger.service.ts     MMKV storage (synchronous)
+      hunger.service.ts     MMKV storage (synchronous) — getEntries/addEntry/addEntries/updateEntry/deleteEntry + draft
       goal.service.ts       MMKV daily-goal band (min/max minutes) in `goal-storage`
       sentry.service.ts     Sentry init + opt-in consent stored in MMKV
       rating.service.ts     in-app review gating + request (expo-store-review) in `rating-storage`
@@ -34,6 +34,9 @@ app-rn/
       GoalGauge.tsx                gauge showing today's total vs the goal band
       GoalSetting.tsx              settings row + slider to edit the goal band (used in More)
       DateTimeInput.tsx            native date+time picker (Android dialog flow)
+      DateNavBar.tsx               bottom bar to step/pick which day the Today list shows (◀ / date / ▶)
+      HungerEntryForm.tsx          shared entry form (start/duration/intensity/focus) — used by Add's Log mode + Today's edit screen
+      EntryCard.tsx                one Today-list entry — tap to edit, long-press to arm delete (red reveal + shake)
       AnimatedDot.tsx              twinkling dot for the focus-issues indicator
       DurationPickerModal.tsx      wheel picker for duration (uses @quidone/react-native-wheel-picker)
       CrashReportingConsentModal.tsx  first-launch consent dialog for Sentry
@@ -41,7 +44,7 @@ app-rn/
       ScreenContainer.tsx          max-width (600px) wrapper for screens — centers content on tablets
     screens/
       AddHungerScreen.tsx   Tab 1 — Track now (start screen + Today summary / in-progress) + Log past
-      TodayScreen.tsx       Tab 2 — Today's entries
+      TodayScreen.tsx       Tab 2 — entries for a chosen day (DateNavBar to browse past days) + tap-to-edit / long-press-to-delete
       ReportScreen.tsx      Tab 3 — Horizontal stacked bar chart (last 10 days)
       MoreScreen.tsx        Tab 4 — Daily goal, language, crash reporting, privacy policy
     navigation/
@@ -55,7 +58,7 @@ app-rn/
     tasks/
       iconSyncTask.ts       background task — resets icon after 3am
     utils/
-      entry.ts              shared helpers (isTodayEntry)
+      entry.ts              shared date helpers (isSameDay, isEntryOnDate, isTodayEntry)
       goal.ts               goalStatus() + formatGoalDuration/formatGoalRange
     walkthrough/
       steps.ts              ordered tour steps (id, targetKey, title/body keys, placement?, interactive?)
@@ -172,7 +175,7 @@ app-rn/
     tasks/
       iconSyncTask.ts         expo-background-task — 3am daily reset
     utils/
-      entry.ts                shared isTodayEntry() helper
+      entry.ts                shared date helpers (isSameDay / isEntryOnDate / isTodayEntry)
   assets/
     full_icon.png             default icon (no hunger today)
     yin_yang_icon.png         alternate icon (hunger logged today)
@@ -397,6 +400,10 @@ Workarounds:
 - Day labels use `toLocaleDateString(undefined, { day: '2-digit', month: '2-digit' })` — locale-aware DD/MM (or MM/DD, DD.MM, etc. depending on device language)
 - Chart sizing uses `useWindowDimensions()` (not `Dimensions.get()`) so it updates on rotation; chart height has a minimum of 350px
 - Log past mode: if no start time selected, defaults to current time on save
+- The **Add** screen's Log-past form and the **Today** edit screen share one component, `HungerEntryForm` (start/duration/intensity/focus); `allowEmptyStart` is the only mode difference (Log allows an empty start → now; edit seeds from the entry). It owns the duration-picker modal + validation.
+- **Today** browses one day at a time: `TodayScreen` holds a `selectedDate` (midnight), filters entries via `isEntryOnDate`, and renders `DateNavBar` pinned at the bottom (◀ / tappable date label → native date picker capped at today / ▶ disabled on today). Header title + goal gauge reflect the selected day; the date resets to today on pane focus. `DateNavBar` must NOT be wrapped in `ScreenContainer` (its `flex:1` collapses a bottom bar to zero height) — it applies `maxWidth: SCREEN_MAX_WIDTH` + `alignSelf:'center'` itself.
+- **Today** entry actions (`EntryCard`): tap a card → edit; long-press → "armed" delete mode (red panel reveals from the end edge via `Animated` width + a one-shot shake on arm only). Only one card is armed at a time — `armedId` lives in `TodayScreen`, and a tap anywhere outside (root `Pressable`, date change, pane blur) disarms. Tapping the revealed trash icon → confirm `Alert` → `deleteEntry`.
+- The Today **edit screen** is a full-screen RN `Modal` (the custom navigator has no stack) animated manually: `animationType="none"` + `transparent`, with a horizontal `translateX` slide from the text-end edge (RTL-aware via `I18nManager.isRTL`), out-animation before unmount so hardware back also slides.
 - Track-now start screen only records the **start time**; intensity + focus issues are set on the in-progress (draft) screen, so hunger details live in one place. Start button = `play` icon; the in-progress Stop button = `stop` icon.
 - The start screen shows a "Today summary" card (session count + total duration) between the mode toggle and the start-time field.
 - Terminology: user-facing English uses "Focus issues" everywhere; the `HungerEntry.concentrationProblems` field name is internal (not user-visible) and kept as-is. pl/de/fr use their single natural "concentration" term.
