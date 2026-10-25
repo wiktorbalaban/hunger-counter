@@ -7,6 +7,8 @@ interface HungerContextType {
   draft: Partial<HungerEntry> | null;
   addEntry: (entry: Omit<HungerEntry, 'id'>) => void;
   addEntries: (entries: Omit<HungerEntry, 'id'>[]) => void;
+  updateEntry: (id: string, patch: Partial<Omit<HungerEntry, 'id'>>) => void;
+  deleteEntry: (id: string) => void;
   saveDraft: (draft: Partial<HungerEntry>) => void;
   clearDraft: () => void;
   clearEntries: () => void;
@@ -28,6 +30,16 @@ export function HungerProvider({ children }: { children: React.ReactNode }) {
     setEntries(Service.getEntries());
   }, []);
 
+  const updateEntryFn = useCallback((id: string, patch: Partial<Omit<HungerEntry, 'id'>>) => {
+    Service.updateEntry(id, patch);
+    setEntries(Service.getEntries());
+  }, []);
+
+  const deleteEntryFn = useCallback((id: string) => {
+    Service.deleteEntry(id);
+    setEntries(Service.getEntries());
+  }, []);
+
   const saveDraftFn = useCallback((d: Partial<HungerEntry>) => {
     Service.saveDraft(d);
     setDraft(d);
@@ -44,7 +56,7 @@ export function HungerProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <HungerContext.Provider value={{ entries, draft, addEntry, addEntries: addEntriesFn, saveDraft: saveDraftFn, clearDraft: clearDraftFn, clearEntries: clearEntriesFn }}>
+    <HungerContext.Provider value={{ entries, draft, addEntry, addEntries: addEntriesFn, updateEntry: updateEntryFn, deleteEntry: deleteEntryFn, saveDraft: saveDraftFn, clearDraft: clearDraftFn, clearEntries: clearEntriesFn }}>
       {children}
     </HungerContext.Provider>
   );

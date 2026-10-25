@@ -50,7 +50,10 @@
   "today": {
     "empty": "Aucune entrée aujourd'hui.\nAppuyez sur Ajouter.",
     "emptyDay": "Aucune entrée ce jour-là.",
-    "focusIssues": "Problèmes de concentration"
+    "focusIssues": "Problèmes de concentration",
+    "editTitle": "Modifier l'entrée",
+    "deleteTitle": "Supprimer l'entrée ?",
+    "deleteMessage": "Cette entrée sera définitivement supprimée."
   },
   "report": {
     "title": "Faim par jour",
@@ -74,6 +77,7 @@
   "common": {
     "save": "Enregistrer",
     "cancel": "Annuler",
+    "delete": "Supprimer",
     "set": "Définir",
     "concentrationProblems": "Problèmes de concentration",
     "selectDateTime": "Choisir date et heure",

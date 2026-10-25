@@ -1,16 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { ScrollView, View, Text } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { ScrollView, View, Text, Pressable, TouchableOpacity, Modal, Animated, I18nManager, useWindowDimensions } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { usePaneNavigation, usePaneFocusEffect } from '../navigation/PaneContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { useHunger } from '../context/HungerContext';
 import { useTheme } from '../context/ThemeContext';
 import { useGoal } from '../context/GoalContext';
-import { AnimatedDot } from '../components/AnimatedDot';
-import { Intensity } from '../models/hunger-entry.model';
+import { HungerEntry, Intensity } from '../models/hunger-entry.model';
 import { isEntryOnDate, isSameDay } from '../utils/entry';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { DateNavBar } from '../components/DateNavBar';
+import { HungerEntryForm } from '../components/HungerEntryForm';
+import { EntryCard } from '../components/EntryCard';
 import { GoalGauge } from '../components/GoalGauge';
 
 function formatDuration(mins: number): string {
@@ -28,13 +30,19 @@ function startOfToday(): Date {
 }
 
 export default function TodayScreen() {
-  const { entries } = useHunger();
-  const { theme } = useTheme();
+  const { entries, updateEntry, deleteEntry } = useHunger();
+  const { theme, isDark } = useTheme();
   const { goal } = useGoal();
   const { t } = useTranslation();
   const navigation = usePaneNavigation();
+  const insets = useSafeAreaInsets();
+  const { width } = useWindowDimensions();
 
   const [selectedDate, setSelectedDate] = useState<Date>(startOfToday);
+  const [editingEntry, setEditingEntry] = useState<HungerEntry | null>(null);
+  const [editorVisible, setEditorVisible] = useState(false);
+  const [armedId, setArmedId] = useState<string | null>(null);
+  const editSlide = useRef(new Animated.Value(0)).current; // 0 = off-screen, 1 = on-screen
 
   const isToday = isSameDay(selectedDate, new Date());
   const dayEntries = entries.filter(e => isEntryOnDate(e, selectedDate));
@@ -45,6 +53,7 @@ export default function TodayScreen() {
   // Reset to today whenever the pane regains focus.
   const resetToToday = useCallback(() => {
     setSelectedDate(startOfToday());
+    setArmedId(null);
   }, []);
   usePaneFocusEffect(resetToToday);
 
@@ -60,8 +69,31 @@ export default function TodayScreen() {
     navigation.setOptions({ title: `${base}${suffix}` });
   }, [totalMins, t, isToday, shortDate]);
 
+  const openEditor = (entry: HungerEntry) => {
+    setEditingEntry(entry);
+    setEditorVisible(true);
+    editSlide.setValue(0);
+    Animated.timing(editSlide, { toValue: 1, duration: 260, useNativeDriver: true }).start();
+  };
+
+  const closeEditor = () => {
+    Animated.timing(editSlide, { toValue: 0, duration: 220, useNativeDriver: true }).start(() => {
+      setEditorVisible(false);
+      setEditingEntry(null);
+    });
+  };
+
+  const headerBg = isDark ? theme.surface : theme.primary;
+  const headerText = isDark ? theme.primary : theme.onPrimary;
+
+  // Slide in from the text-end edge (right in LTR, left in RTL).
+  const editTranslateX = editSlide.interpolate({
+    inputRange: [0, 1],
+    outputRange: [I18nManager.isRTL ? -width : width, 0],
+  });
+
   return (
-    <View className="flex-1 bg-gray-50 dark:bg-gray-900">
+    <Pressable className="flex-1 bg-gray-50 dark:bg-gray-900" onPress={() => setArmedId(null)}>
       <ScrollView className="flex-1">
         <ScreenContainer>
           <View style={{ padding: 16, gap: 12 }}>
@@ -80,45 +112,47 @@ export default function TodayScreen() {
                 </Text>
               </View>
             )}
-            {dayEntries.map(entry => {
-              const color = intensityColor[entry.intensity];
-              return (
-                <View key={entry.id} className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden" style={{ elevation: 2 }}>
-                  <View style={{ height: 4, backgroundColor: color }} />
-                  <View style={{ padding: 16, gap: 12 }}>
-                    <View className="flex-row items-center justify-between">
-                      <Text style={{ color }} className="font-bold text-base">{t(`intensity.${entry.intensity}`)}</Text>
-                      <Text className="text-sm text-gray-400 dark:text-gray-500">
-                        {new Date(entry.startTime).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}
-                      </Text>
-                    </View>
-                    <View className="flex-row gap-2 flex-wrap">
-                      <Chip icon="time-outline" label={formatDuration(entry.durationMinutes)} primaryColor={theme.primary} />
-                      {entry.concentrationProblems && (
-                        <View style={{ backgroundColor: theme.conc }} className="flex-row items-center gap-1 px-3 py-1 rounded-full">
-                          <AnimatedDot size={6} color={theme.white} />
-                          <Text className="text-white text-xs font-medium">{t('today.focusIssues')}</Text>
-                        </View>
-                      )}
-                    </View>
-                  </View>
-                </View>
-              );
-            })}
+            {dayEntries.map(entry => (
+              <EntryCard
+                key={entry.id}
+                entry={entry}
+                color={intensityColor[entry.intensity]}
+                armed={armedId === entry.id}
+                onArm={() => setArmedId(entry.id)}
+                onDisarm={() => setArmedId(null)}
+                onEdit={() => openEditor(entry)}
+                onDelete={() => { deleteEntry(entry.id); setArmedId(null); }}
+              />
+            ))}
           </View>
         </ScreenContainer>
       </ScrollView>
 
-      <DateNavBar date={selectedDate} onChange={setSelectedDate} maxDateLabel={t('tabs.today')} />
-    </View>
-  );
-}
+      <DateNavBar date={selectedDate} onChange={(d) => { setArmedId(null); setSelectedDate(d); }} maxDateLabel={t('tabs.today')} />
 
-function Chip({ icon, label, primaryColor }: { icon: keyof typeof Ionicons.glyphMap; label: string; primaryColor: string }) {
-  return (
-    <View style={{ backgroundColor: primaryColor + '1a' }} className="flex-row items-center gap-1 px-3 py-1 rounded-full">
-      <Ionicons name={icon} size={13} color={primaryColor} />
-      <Text style={{ color: primaryColor }} className="text-xs font-medium">{label}</Text>
-    </View>
+      <Modal visible={editorVisible} animationType="none" transparent onRequestClose={closeEditor}>
+        <Animated.View className="flex-1 bg-gray-50 dark:bg-gray-900" style={{ paddingTop: insets.top, transform: [{ translateX: editTranslateX }] }}>
+          <View className="flex-row items-center" style={{ height: 56, paddingHorizontal: 8, backgroundColor: headerBg }}>
+            <TouchableOpacity onPress={closeEditor} className="p-2" hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+              <Ionicons name="arrow-back" size={24} color={headerText} />
+            </TouchableOpacity>
+            <Text style={{ color: headerText }} className="font-bold text-lg ms-2">{t('today.editTitle')}</Text>
+          </View>
+          <ScrollView className="flex-1" contentContainerClassName="pb-8">
+            <ScreenContainer>
+              <View className="p-4">
+                {editingEntry && (
+                  <HungerEntryForm
+                    initial={editingEntry}
+                    submitLabel={t('common.save')}
+                    onSubmit={(v) => { updateEntry(editingEntry.id, v); closeEditor(); }}
+                  />
+                )}
+              </View>
+            </ScreenContainer>
+          </ScrollView>
+        </Animated.View>
+      </Modal>
+    </Pressable>
   );
 }

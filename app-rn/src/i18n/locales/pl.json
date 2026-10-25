@@ -50,7 +50,10 @@
   "today": {
     "empty": "Brak wpisów na dziś.\nNaciśnij Dodaj, by dodać wpis.",
     "emptyDay": "Brak wpisów w tym dniu.",
-    "focusIssues": "Problemy z koncentracją"
+    "focusIssues": "Problemy z koncentracją",
+    "editTitle": "Edytuj wpis",
+    "deleteTitle": "Usunąć wpis?",
+    "deleteMessage": "Ten wpis zostanie trwale usunięty."
   },
   "report": {
     "title": "Głód na dzień",
@@ -74,6 +77,7 @@
   "common": {
     "save": "Zapisz",
     "cancel": "Anuluj",
+    "delete": "Usuń",
     "set": "Ustaw",
     "concentrationProblems": "Problemy z koncentracją",
     "selectDateTime": "Wybierz datę i godzinę",

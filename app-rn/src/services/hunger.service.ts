@@ -24,6 +24,16 @@ export function addEntries(newEntries: Omit<HungerEntry, 'id'>[]): void {
   storage.set(ENTRIES_KEY, JSON.stringify([...existing, ...stamped]));
 }
 
+export function updateEntry(id: string, patch: Partial<Omit<HungerEntry, 'id'>>): void {
+  const entries = getEntries().map(e => (e.id === id ? { ...e, ...patch } : e));
+  storage.set(ENTRIES_KEY, JSON.stringify(entries));
+}
+
+export function deleteEntry(id: string): void {
+  const entries = getEntries().filter(e => e.id !== id);
+  storage.set(ENTRIES_KEY, JSON.stringify(entries));
+}
+
 export function getDraft(): Partial<HungerEntry> | null {
   const json = storage.getString(DRAFT_KEY);
   return json ? JSON.parse(json) : null;

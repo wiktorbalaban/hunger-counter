@@ -50,7 +50,10 @@
   "today": {
     "empty": "No hunger entries today.\nTap Add to record one.",
     "emptyDay": "No hunger entries on this day.",
-    "focusIssues": "Focus issues"
+    "focusIssues": "Focus issues",
+    "editTitle": "Edit entry",
+    "deleteTitle": "Delete entry?",
+    "deleteMessage": "This entry will be permanently removed."
   },
   "report": {
     "title": "Hunger per day",
@@ -74,6 +77,7 @@
   "common": {
     "save": "Save",
     "cancel": "Cancel",
+    "delete": "Delete",
     "set": "Set",
     "concentrationProblems": "Focus issues",
     "selectDateTime": "Select date & time",

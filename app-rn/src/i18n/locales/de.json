@@ -50,7 +50,10 @@
   "today": {
     "empty": "Heute keine Einträge.\nTippe auf Hinzufügen.",
     "emptyDay": "Keine Einträge an diesem Tag.",
-    "focusIssues": "Konzentrationsprobleme"
+    "focusIssues": "Konzentrationsprobleme",
+    "editTitle": "Eintrag bearbeiten",
+    "deleteTitle": "Eintrag löschen?",
+    "deleteMessage": "Dieser Eintrag wird dauerhaft entfernt."
   },
   "report": {
     "title": "Hunger pro Tag",
@@ -74,6 +77,7 @@
   "common": {
     "save": "Speichern",
     "cancel": "Abbrechen",
+    "delete": "Löschen",
     "set": "Festlegen",
     "concentrationProblems": "Konzentrationsprobleme",
     "selectDateTime": "Datum & Uhrzeit wählen",

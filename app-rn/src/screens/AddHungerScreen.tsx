@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { ScrollView, View, Text, TouchableOpacity, Switch, Alert } from 'react-native';
+import { ScrollView, View, Text, TouchableOpacity, Switch } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { usePaneNavigation, usePaneFocusEffect } from '../navigation/PaneContext';
 import { useTranslation } from 'react-i18next';
@@ -7,7 +7,7 @@ import { useHunger } from '../context/HungerContext';
 import { Intensity } from '../models/hunger-entry.model';
 import { IntensityPicker } from '../components/IntensityPicker';
 import { DateTimeInput } from '../components/DateTimeInput';
-import { DurationPickerModal } from '../components/DurationPickerModal';
+import { HungerEntryForm } from '../components/HungerEntryForm';
 import { useTheme } from '../context/ThemeContext';
 import { useGoal } from '../context/GoalContext';
 import { GoalGauge } from '../components/GoalGauge';
@@ -66,13 +66,6 @@ export default function AddHungerScreen() {
   const [endIntensity,     setEndIntensity]     = useState<Intensity>('low');
   const [endConc,          setEndConc]          = useState(false);
 
-  const [logStart,         setLogStart]         = useState<Date | null>(null);
-  const [logDuration,      setLogDuration]      = useState<number | null>(null);
-  const [logIntensity,     setLogIntensity]     = useState<Intensity>('medium');
-  const [logConc,          setLogConc]          = useState(false);
-
-  const [durationModalVisible, setDurationModalVisible] = useState(false);
-
   usePaneFocusEffect(useCallback(() => {
     setEndTime(new Date());
     if (draft) {
@@ -80,13 +73,6 @@ export default function AddHungerScreen() {
       setEndConc(draft.concentrationProblems ?? false);
     }
   }, [draft]));
-
-  const openDurationModal = () => setDurationModalVisible(true);
-
-  const handleModalSet = (mins: number) => {
-    setLogDuration(mins);
-    setDurationModalVisible(false);
-  };
 
   const handleStart = () => {
     // Hunger details (intensity, focus issues) are set later on the in-progress
@@ -123,11 +109,8 @@ export default function AddHungerScreen() {
     navigation.navigate('Today');
   };
 
-  const handleSaveManual = () => {
-    if (!logDuration || logDuration <= 0) { Alert.alert(t('add.invalidDuration')); return; }
-    const startISO = logStart ? logStart.toISOString() : new Date().toISOString();
-    addEntry({ startTime: startISO, durationMinutes: logDuration, intensity: logIntensity, concentrationProblems: logConc });
-    setLogStart(null); setLogDuration(null); setLogIntensity('medium'); setLogConc(false);
+  const handleSaveManual = (values: Parameters<typeof addEntry>[0]) => {
+    addEntry(values);
     navigation.navigate('Today');
   };
 
@@ -251,45 +234,10 @@ export default function AddHungerScreen() {
 
       {/* ── LOG MANUALLY ── */}
       {mode === 'log' && (
-        <View className="mx-4 gap-4">
-          <Card title={t('add.startTimeOptional')}>
-            <DateTimeInput value={logStart} onChange={setLogStart} placeholder={t('common.now')} />
-          </Card>
-          <Card title={t('add.duration')}>
-            <TouchableOpacity
-              onPress={openDurationModal}
-              className="border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 bg-white dark:bg-gray-700"
-            >
-              <Text className={logDuration ? 'text-gray-900 dark:text-gray-100 text-base' : 'text-gray-400 dark:text-gray-500 text-base'}>
-                {logDuration ? formatDuration(logDuration) : t('add.setDuration')}
-              </Text>
-            </TouchableOpacity>
-          </Card>
-          <Card title={t('add.intensity')}>
-            <IntensityPicker value={logIntensity} onChange={setLogIntensity} />
-          </Card>
-          <Card title={t('add.focusIssues')}>
-            <Row label={t('common.concentrationProblems')}>
-              <Switch value={logConc} onValueChange={setLogConc} trackColor={{ true: theme.primary, false: theme.border }} thumbColor={theme.surface} />
-            </Row>
-          </Card>
-          <TouchableOpacity
-            onPress={handleSaveManual}
-            disabled={!logDuration}
-            className="rounded-xl py-4 items-center"
-            style={{ elevation: 2, opacity: logDuration ? 1 : 0.5, backgroundColor: theme.buttonSurface }}
-          >
-            <Text style={primaryBtnText} className="font-bold text-base">{t('common.save')}</Text>
-          </TouchableOpacity>
+        <View className="mx-4">
+          <HungerEntryForm allowEmptyStart submitLabel={t('common.save')} onSubmit={handleSaveManual} />
         </View>
       )}
-
-      <DurationPickerModal
-        visible={durationModalVisible}
-        initialValue={logDuration ?? 15}
-        onSet={handleModalSet}
-        onCancel={() => setDurationModalVisible(false)}
-      />
 
       </ScreenContainer>
     </ScrollView>
