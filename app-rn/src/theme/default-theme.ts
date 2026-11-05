@@ -85,8 +85,8 @@ export const darkTheme: Theme = {
   conc:         '#5a5a70',
   concLight:    '#9090a8',
 
-  background:    '#111827',
-  surface:       '#1f2937',
+  background:    '#000000',
+  surface:       '#111827',
   buttonSurface: '#374151',
   modalOverlay: 'rgba(0,0,0,0.6)',
 

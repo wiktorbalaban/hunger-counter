@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Modal, View, Text, TouchableOpacity } from 'react-native';
 import BaseWheelPicker, { withVirtualized } from '@quidone/react-native-wheel-picker';
 import { useTranslation } from 'react-i18next';
+import { AppButton } from './AppButton';
 import { useTheme } from '../context/ThemeContext';
 
 const WheelPicker = withVirtualized(BaseWheelPicker);
@@ -41,7 +42,7 @@ export function DurationPickerModal({ visible, initialValue = 15, onSet, onCance
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onCancel}>
       <View style={{ flex: 1, backgroundColor: theme.modalOverlay, justifyContent: 'center', alignItems: 'center' }}>
-        <View className="bg-white dark:bg-gray-800 rounded-2xl p-6 mx-8 w-80 gap-5">
+        <View className="bg-white dark:bg-gray-900 rounded-2xl p-6 mx-8 w-80 gap-5">
           <View
             className="border border-gray-300 dark:border-gray-600 rounded-xl overflow-hidden"
             style={{ alignSelf: 'center', width: 160 }}
@@ -53,7 +54,7 @@ export function DurationPickerModal({ visible, initialValue = 15, onSet, onCance
               itemHeight={52}
               visibleItemCount={3}
               itemTextStyle={{ fontSize: 26, fontWeight: '600', color: theme.textPrimary }}
-              overlayItemStyle={{ backgroundColor: theme.secondarySurface }}
+              overlayItemStyle={{ backgroundColor: isDark ? theme.surface : theme.secondarySurface }}
             />
           </View>
 
@@ -77,19 +78,19 @@ export function DurationPickerModal({ visible, initialValue = 15, onSet, onCance
           </View>
 
           <View className="flex-row gap-4">
-            <TouchableOpacity
+            <AppButton
+              variant="secondary"
+              size="sm"
+              label={t('common.cancel')}
               onPress={onCancel}
-              className="flex-1 py-3 rounded-xl border border-gray-300 dark:border-gray-600 items-center"
-            >
-              <Text className="text-gray-600 dark:text-gray-400 font-semibold">{t('common.cancel')}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
+              fullWidth
+            />
+            <AppButton
+              size="sm"
+              label={t('common.set')}
               onPress={() => onSet(mins)}
-              className="flex-1 py-3 rounded-xl items-center"
-              style={{ backgroundColor: theme.buttonSurface }}
-            >
-              <Text style={{ color: isDark ? theme.primary : theme.onPrimary }} className="font-semibold">{t('common.set')}</Text>
-            </TouchableOpacity>
+              fullWidth
+            />
           </View>
         </View>
       </View>

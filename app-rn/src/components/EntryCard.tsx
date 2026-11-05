@@ -68,7 +68,7 @@ export function EntryCard({ entry, color, armed, onArm, onDisarm, onEdit, onDele
     <Pressable
       onPress={() => { if (armed) { onDisarm(); } else { onEdit(); } }}
       onLongPress={onArm}
-      className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden"
+      className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden"
       style={{ elevation: 2 }}
     >
       <View style={{ height: 4, backgroundColor: color }} />

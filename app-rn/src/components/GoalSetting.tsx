@@ -7,9 +7,10 @@ import { useGoal } from '../context/GoalContext';
 import { GOAL_SCALE_MIN, GOAL_SCALE_MAX, GOAL_STEP } from '../services/goal.service';
 import { formatGoalDuration, formatGoalRange } from '../utils/goal';
 import { RangeSlider } from './RangeSlider';
+import { AppButton } from './AppButton';
 
 export function GoalSetting() {
-  const { theme, isDark } = useTheme();
+  const { theme } = useTheme();
   const { t } = useTranslation();
   const { goal, setGoal } = useGoal();
 
@@ -71,22 +72,19 @@ export function GoalSetting() {
             </View>
 
             <View className="flex-row gap-4">
-              <TouchableOpacity
+              <AppButton
+                variant="secondary"
+                size="sm"
+                label={t('common.cancel')}
                 onPress={() => setModalVisible(false)}
-                className="flex-1 py-3 rounded-xl items-center"
-                style={{ borderWidth: 1, borderColor: theme.borderStrong }}
-              >
-                <Text style={{ color: theme.textSecondary }} className="font-semibold">{t('common.cancel')}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
+                fullWidth
+              />
+              <AppButton
+                size="sm"
+                label={t('common.set')}
                 onPress={handleSet}
-                className="flex-1 py-3 rounded-xl items-center"
-                style={{ backgroundColor: theme.buttonSurface }}
-              >
-                <Text style={{ color: isDark ? theme.primary : theme.onPrimary }} className="font-semibold">
-                  {t('common.set')}
-                </Text>
-              </TouchableOpacity>
+                fullWidth
+              />
             </View>
           </View>
         </View>

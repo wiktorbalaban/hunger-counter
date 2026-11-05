@@ -28,7 +28,7 @@ export function Pane({
   const [title, setTitle] = useState(defaultTitle);
 
   const headerBg = isActive
-    ? (isDark ? theme.surface : theme.primary)
+    ? (isDark ? theme.background : theme.primary)
     : theme.companionHeaderBg;
   const headerTextColor = isActive
     ? (isDark ? theme.primary : theme.onPrimary)

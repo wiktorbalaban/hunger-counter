@@ -1,7 +1,8 @@
 import React from 'react';
-import { Modal, View, Text, TouchableOpacity } from 'react-native';
+import { Modal, View, Text } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../context/ThemeContext';
+import { AppButton } from './AppButton';
 import { setConsent } from '../services/sentry.service';
 
 interface Props {
@@ -29,24 +30,21 @@ export default function CrashReportingConsentModal({ visible, onDismiss }: Props
             {t('crashReporting.message')}
           </Text>
           <View style={{ flexDirection: 'row', gap: 10, marginTop: 8 }}>
-            <TouchableOpacity
+            <AppButton
+              variant="secondary"
+              size="sm"
+              label={t('crashReporting.decline')}
               onPress={() => handleChoice(false)}
-              style={{ flex: 1, padding: 12, borderRadius: 10, alignItems: 'center', backgroundColor: theme.secondarySurface }}
+              fullWidth
               activeOpacity={0.7}
-            >
-              <Text style={{ fontSize: 15, fontWeight: '600', color: theme.textPrimary }}>
-                {t('crashReporting.decline')}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
+            />
+            <AppButton
+              size="sm"
+              label={t('crashReporting.allow')}
               onPress={() => handleChoice(true)}
-              style={{ flex: 1, padding: 12, borderRadius: 10, alignItems: 'center', backgroundColor: theme.primary }}
+              fullWidth
               activeOpacity={0.7}
-            >
-              <Text style={{ fontSize: 15, fontWeight: '600', color: theme.onPrimary }}>
-                {t('crashReporting.allow')}
-              </Text>
-            </TouchableOpacity>
+            />
           </View>
         </View>
       </View>

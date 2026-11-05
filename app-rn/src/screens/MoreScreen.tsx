@@ -35,11 +35,11 @@ export default function MoreScreen() {
   }
 
   return (
-    <View className="flex-1 bg-gray-50 dark:bg-gray-900">
+    <View className="flex-1 bg-gray-50 dark:bg-black">
       <ScreenContainer>
         <View style={{ padding: 16, gap: 16 }}>
 
-      <View className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden" style={{ elevation: 1 }}>
+      <View className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden" style={{ elevation: 1 }}>
         <LanguageSetting />
         <ThemeSetting />
         <GoalSetting />

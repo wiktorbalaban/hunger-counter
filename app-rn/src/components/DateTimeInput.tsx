@@ -48,7 +48,7 @@ export function DateTimeInput({ value, onChange, placeholder = 'Select date & ti
     <>
       <TouchableOpacity
         onPress={() => { setPendingDate(value ?? new Date()); setShowDate(true); }}
-        className="border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 bg-white dark:bg-gray-700"
+        className="border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 bg-white dark:bg-gray-800"
       >
         <Text className={value ? 'text-gray-900 dark:text-gray-100 text-base' : 'text-gray-400 dark:text-gray-500 text-base'}>{label}</Text>
       </TouchableOpacity>

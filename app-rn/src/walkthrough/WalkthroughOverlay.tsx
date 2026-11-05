@@ -13,6 +13,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../context/ThemeContext';
 import { useWalkthrough } from './WalkthroughContext';
+import { AppButton } from '../components/AppButton';
 
 interface Rect {
   x: number;
@@ -49,7 +50,7 @@ function cutoutPath(W: number, H: number, r: Rect): string {
 
 export function WalkthroughOverlay() {
   const { activeStep, index, total, next, skip, getTargetRef } = useWalkthrough();
-  const { theme, isDark } = useTheme();
+  const { theme } = useTheme();
   const { t } = useTranslation();
   const { width: W, height: H } = useWindowDimensions();
   const insets = useSafeAreaInsets();
@@ -161,7 +162,6 @@ export function WalkthroughOverlay() {
       : { left, bottom: H - (cut.y - CARD_GAP) };
   }
 
-  const primaryTextColor = isDark ? theme.primary : theme.onPrimary;
   const cardWidth = Math.min(CARD_MAX_WIDTH, W - 2 * SCREEN_PAD);
   const interactive = !!activeStep.interactive;
 
@@ -270,20 +270,13 @@ export function WalkthroughOverlay() {
                   </TouchableOpacity>
                 )}
                 {!interactive && (
-                  <TouchableOpacity
+                  <AppButton
+                    label={isLast ? t('walkthrough.gotIt') : t('walkthrough.next')}
                     onPress={next}
+                    size="sm"
+                    paddingHorizontal={20}
                     activeOpacity={0.7}
-                    style={{
-                      backgroundColor: theme.buttonSurface,
-                      borderRadius: 10,
-                      paddingVertical: 10,
-                      paddingHorizontal: 20,
-                    }}
-                  >
-                    <Text style={{ color: primaryTextColor, fontWeight: '700' }}>
-                      {isLast ? t('walkthrough.gotIt') : t('walkthrough.next')}
-                    </Text>
-                  </TouchableOpacity>
+                  />
                 )}
               </View>
             </View>

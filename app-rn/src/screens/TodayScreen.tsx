@@ -93,11 +93,11 @@ export default function TodayScreen() {
   });
 
   return (
-    <Pressable className="flex-1 bg-gray-50 dark:bg-gray-900" onPress={() => setArmedId(null)}>
+    <Pressable className="flex-1 bg-gray-50 dark:bg-black" onPress={() => setArmedId(null)}>
       <ScrollView className="flex-1">
         <ScreenContainer>
           <View style={{ padding: 16, gap: 12 }}>
-            <View className="bg-white dark:bg-gray-800 rounded-xl items-center" style={{ padding: 16, elevation: 2 }}>
+            <View className="bg-white dark:bg-gray-900 rounded-xl items-center" style={{ padding: 16, elevation: 2 }}>
               <GoalGauge
                 totalMinutes={totalMins}
                 goal={goal}
@@ -131,7 +131,7 @@ export default function TodayScreen() {
       <DateNavBar date={selectedDate} onChange={(d) => { setArmedId(null); setSelectedDate(d); }} maxDateLabel={t('tabs.today')} />
 
       <Modal visible={editorVisible} animationType="none" transparent onRequestClose={closeEditor}>
-        <Animated.View className="flex-1 bg-gray-50 dark:bg-gray-900" style={{ paddingTop: insets.top, transform: [{ translateX: editTranslateX }] }}>
+        <Animated.View className="flex-1 bg-gray-50 dark:bg-black" style={{ paddingTop: insets.top, transform: [{ translateX: editTranslateX }] }}>
           <View className="flex-row items-center" style={{ height: 56, paddingHorizontal: 8, backgroundColor: headerBg }}>
             <TouchableOpacity onPress={closeEditor} className="p-2" hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
               <Ionicons name="arrow-back" size={24} color={headerText} />

@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { ScrollView, View, Text, TouchableOpacity, Switch } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { usePaneNavigation, usePaneFocusEffect } from '../navigation/PaneContext';
 import { useTranslation } from 'react-i18next';
 import { useHunger } from '../context/HungerContext';
@@ -8,6 +7,7 @@ import { Intensity } from '../models/hunger-entry.model';
 import { IntensityPicker } from '../components/IntensityPicker';
 import { DateTimeInput } from '../components/DateTimeInput';
 import { HungerEntryForm } from '../components/HungerEntryForm';
+import { AppButton } from '../components/AppButton';
 import { useTheme } from '../context/ThemeContext';
 import { useGoal } from '../context/GoalContext';
 import { GoalGauge } from '../components/GoalGauge';
@@ -40,7 +40,6 @@ export default function AddHungerScreen() {
   const { theme, isDark } = useTheme();
   const { goal } = useGoal();
   const { t } = useTranslation();
-  const primaryBtnText = { color: isDark ? theme.primary : theme.onPrimary };
 
   const [mode, setMode] = useState<'track' | 'log'>('track');
   const [now, setNow] = useState(new Date());
@@ -115,16 +114,24 @@ export default function AddHungerScreen() {
   };
 
   return (
-    <ScrollView className="flex-1 bg-gray-50 dark:bg-gray-900" contentContainerClassName="pb-8">
+    <ScrollView className="flex-1 bg-gray-50 dark:bg-black" contentContainerClassName="pb-8">
       <ScreenContainer>
 
       {/* Mode toggle */}
-      <View ref={modeToggleRef} collapsable={false} className="flex-row m-4 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800" style={{ elevation: 1 }}>
+      <View ref={modeToggleRef} collapsable={false} className="flex-row m-4 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900" style={{ elevation: 1 }}>
         {(['track', 'log'] as const).map(m => (
           <TouchableOpacity
             key={m} onPress={() => setMode(m)}
             className="flex-1 py-3 items-center"
-            style={{ backgroundColor: mode === m ? theme.buttonSurface : 'transparent' }}
+            style={[
+              { backgroundColor: mode === m && !isDark ? theme.buttonSurface : 'transparent' },
+              isDark && {
+                borderWidth: 2,
+                borderColor: mode === m ? theme.primary : 'transparent',
+                borderRadius: 10,
+                margin: 0,
+              },
+            ]}
           >
             <Text style={{ color: mode === m ? (isDark ? theme.primary : theme.onPrimary) : theme.textInactive }} className="font-semibold">
               {m === 'track' ? t('add.modeTrack') : t('add.modeLog')}
@@ -156,24 +163,12 @@ export default function AddHungerScreen() {
             <DateTimeInput value={startTime} onChange={setStartTime} placeholder={t('common.selectDateTime')} />
           </Card>
           <WalkthroughTarget targetKey="add.startButton">
-            <TouchableOpacity
+            <AppButton
+              label={t('add.startHunger')}
               onPress={handleStart}
-              activeOpacity={0.85}
-              className="rounded-2xl py-7 items-center"
-              style={{
-                backgroundColor: theme.buttonSurface,
-                elevation: 4,
-                shadowColor: '#000',
-                shadowOpacity: 0.18,
-                shadowRadius: 8,
-                shadowOffset: { width: 0, height: 3 },
-              }}
-            >
-              <View className="flex-row items-center" style={{ gap: 10 }}>
-                <Ionicons name="play" size={26} color={primaryBtnText.color} />
-                <Text style={primaryBtnText} className="font-bold text-xl">{t('add.startHunger')}</Text>
-              </View>
-            </TouchableOpacity>
+              size="hero"
+              icon="play"
+            />
           </WalkthroughTarget>
         </View>
       )}
@@ -187,7 +182,7 @@ export default function AddHungerScreen() {
             </Text>
           </View>
           {draft && (
-            <View className="bg-white dark:bg-gray-800 rounded-xl items-center" style={{ padding: 16, elevation: 1 }}>
+            <View className="bg-white dark:bg-gray-900 rounded-xl items-center" style={{ padding: 16, elevation: 1 }}>
               <GoalGauge totalMinutes={liveTotal} goal={goal} caption={t('goal.todayLabel')} />
             </View>
           )}
@@ -202,33 +197,23 @@ export default function AddHungerScreen() {
           <WalkthroughTarget targetKey="add.focus">
             <Card title={t('add.focusIssues')}>
               <Row label={t('common.concentrationProblems')}>
-                <Switch value={endConc} onValueChange={setEndConc} trackColor={{ true: theme.primary, false: theme.border }} thumbColor={theme.surface} />
+                <Switch value={endConc} onValueChange={setEndConc} trackColor={{ true: theme.primary, false: theme.border }} thumbColor="#ffffff" />
               </Row>
             </Card>
           </WalkthroughTarget>
           <WalkthroughTarget targetKey="add.stopButton">
-            <TouchableOpacity
+            <AppButton
+              label={t('add.stopHunger')}
               onPress={handleSaveTracked}
-              activeOpacity={0.85}
-              className="rounded-xl py-5 items-center"
-              style={{
-                backgroundColor: theme.buttonSurface,
-                elevation: 4,
-                shadowColor: '#000',
-                shadowOpacity: 0.18,
-                shadowRadius: 8,
-                shadowOffset: { width: 0, height: 3 },
-              }}
-            >
-              <View className="flex-row items-center" style={{ gap: 8 }}>
-                <Ionicons name="stop" size={20} color={primaryBtnText.color} />
-                <Text style={primaryBtnText} className="font-bold text-lg">{t('add.stopHunger')}</Text>
-              </View>
-            </TouchableOpacity>
+              size="lg"
+              icon="stop"
+            />
           </WalkthroughTarget>
-          <TouchableOpacity onPress={() => clearDraft()} className="border border-gray-300 dark:border-gray-600 rounded-xl py-4 items-center">
-            <Text className="text-gray-600 dark:text-gray-400 font-semibold">{t('add.cancelSession')}</Text>
-          </TouchableOpacity>
+          <AppButton
+            variant="secondary"
+            label={t('add.cancelSession')}
+            onPress={() => clearDraft()}
+          />
         </View>
       )}
 
@@ -246,7 +231,7 @@ export default function AddHungerScreen() {
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <View className="bg-white dark:bg-gray-800 rounded-xl p-4 gap-3" style={{ elevation: 1 }}>
+    <View className="bg-white dark:bg-gray-900 rounded-xl p-4 gap-3" style={{ elevation: 1 }}>
       <Text className="text-gray-500 dark:text-gray-400 text-xs font-semibold uppercase tracking-wide">{title}</Text>
       {children}
     </View>

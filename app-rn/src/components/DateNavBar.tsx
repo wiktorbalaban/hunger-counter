@@ -53,7 +53,7 @@ export function DateNavBar({ date, onChange, maxDate = new Date(), maxDateLabel 
   };
 
   return (
-    <View className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+    <View className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
       <View
         className="flex-row items-center justify-between"
         style={{ paddingHorizontal: 16, paddingVertical: 10, width: '100%', maxWidth: SCREEN_MAX_WIDTH, alignSelf: 'center' }}

@@ -5,6 +5,7 @@ import { HungerEntry, Intensity } from '../models/hunger-entry.model';
 import { IntensityPicker } from './IntensityPicker';
 import { DateTimeInput } from './DateTimeInput';
 import { DurationPickerModal } from './DurationPickerModal';
+import { AppButton } from './AppButton';
 import { useTheme } from '../context/ThemeContext';
 
 function formatDuration(mins: number): string {
@@ -32,9 +33,8 @@ interface Props {
 }
 
 export function HungerEntryForm({ initial, allowEmptyStart = false, submitLabel, onSubmit }: Props) {
-  const { theme, isDark } = useTheme();
+  const { theme } = useTheme();
   const { t } = useTranslation();
-  const primaryBtnText = { color: isDark ? theme.primary : theme.onPrimary };
 
   const [start, setStart] = useState<Date | null>(initial?.startTime ? new Date(initial.startTime) : null);
   const [duration, setDuration] = useState<number | null>(initial?.durationMinutes ?? null);
@@ -60,7 +60,7 @@ export function HungerEntryForm({ initial, allowEmptyStart = false, submitLabel,
       <Card title={t('add.duration')}>
         <TouchableOpacity
           onPress={() => setDurationModalVisible(true)}
-          className="border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 bg-white dark:bg-gray-700"
+          className="border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 bg-white dark:bg-gray-800"
         >
           <Text className={duration ? 'text-gray-900 dark:text-gray-100 text-base' : 'text-gray-400 dark:text-gray-500 text-base'}>
             {duration ? formatDuration(duration) : t('add.setDuration')}
@@ -72,17 +72,15 @@ export function HungerEntryForm({ initial, allowEmptyStart = false, submitLabel,
       </Card>
       <Card title={t('add.focusIssues')}>
         <Row label={t('common.concentrationProblems')}>
-          <Switch value={conc} onValueChange={setConc} trackColor={{ true: theme.primary, false: theme.border }} thumbColor={theme.surface} />
+          <Switch value={conc} onValueChange={setConc} trackColor={{ true: theme.primary, false: theme.border }} thumbColor="#ffffff" />
         </Row>
       </Card>
-      <TouchableOpacity
+      <AppButton
+        label={submitLabel}
         onPress={handleSubmit}
         disabled={!duration}
-        className="rounded-xl py-4 items-center"
-        style={{ elevation: 2, opacity: duration ? 1 : 0.5, backgroundColor: theme.buttonSurface }}
-      >
-        <Text style={primaryBtnText} className="font-bold text-base">{submitLabel}</Text>
-      </TouchableOpacity>
+        style={{ elevation: 2 }}
+      />
 
       <DurationPickerModal
         visible={durationModalVisible}
@@ -96,7 +94,7 @@ export function HungerEntryForm({ initial, allowEmptyStart = false, submitLabel,
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <View className="bg-white dark:bg-gray-800 rounded-xl p-4 gap-3" style={{ elevation: 1 }}>
+    <View className="bg-white dark:bg-gray-900 rounded-xl p-4 gap-3" style={{ elevation: 1 }}>
       <Text className="text-gray-500 dark:text-gray-400 text-xs font-semibold uppercase tracking-wide">{title}</Text>
       {children}
     </View>

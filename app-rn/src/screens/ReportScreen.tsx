@@ -84,10 +84,10 @@ export default function ReportScreen() {
   const yDomainMax = Math.max(maxDailyTotal, goal.max) * 1.05 || 1;
 
   return (
-    <View className="flex-1 bg-gray-50 dark:bg-gray-900">
+    <View className="flex-1 bg-gray-50 dark:bg-black">
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 16 }}>
         <ScreenContainer>
-        <View className="bg-white dark:bg-gray-800 rounded-xl p-4" style={{ elevation: 2 }}>
+        <View className="bg-white dark:bg-gray-900 rounded-xl p-4" style={{ elevation: 2 }}>
           <Text className="font-semibold text-base mb-1 text-gray-500 dark:text-gray-400">{t('report.title')}</Text>
           <Text className="text-xs mb-2 text-gray-400 dark:text-gray-500">{t('report.subtitle', { count: DAYS_SHOWN })}</Text>
 
